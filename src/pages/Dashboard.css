@@ -1,41 +1,256 @@
 .dashboard {
   display: grid;
-  gap: 16px;
+  gap: 20px;
+  padding: 20px;
 }
 
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Xarita */
 .dashboard__map {
-  height: 300px;
   background: #bcd3f7;
   border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.namangan-map {
+  width: 100%;
+  height: auto;
+}
+
+.district {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.district:hover path {
+  fill: #3da65d !important;
+  filter: brightness(1.1);
+}
+
+.district[data-selected="true"] path {
+  fill: #2e7d4e !important;
+  stroke: #ffcc00;
+  stroke-width: 3;
+}
+
+.district text {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Statistika */
 .dashboard__stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-.card {
-  background: #bcd3f7;
-  padding: 14px;
+.stat-card {
+  background: white;
+  padding: 20px;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
 }
 
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+  font-size: 36px;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Hisobot yuklash tugmasi */
 .dashboard__btn {
-  background: #14a94a;
+  background: linear-gradient(135deg, #14a94a 0%, #0f7d37 100%);
   color: white;
   border: none;
-  padding: 14px;
-  border-radius: 14px;
+  padding: 16px;
+  border-radius: 12px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(20, 169, 74, 0.3);
+}
+
+/* Tuman ma'lumotlari */
+.district-details {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.district-details h3 {
+  margin: 0 0 16px 0;
+  font-size: 22px;
+  color: #333;
+  border-bottom: 2px solid #4A90E2;
+  padding-bottom: 8px;
+}
+
+.district-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.district-stat {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.district-stat .label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+}
+
+.district-stat .value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #4A90E2;
+}
+
+/* Shaxslar ro'yxati */
+.persons-list {
+  margin-top: 20px;
+}
+
+.persons-list h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #333;
 }
 
 .dashboard__list {
-  background: #bcd3f7;
-  height: 220px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+.dashboard__list h3 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.empty-text {
+  text-align: center;
+  color: #999;
+  padding: 40px;
+}
+
+.persons-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.persons-table thead {
+  background-color: #f8f9fa;
+}
+
+.persons-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.persons-table td {
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.persons-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-yes {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-no {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 10px;
+  }
+
+  .dashboard__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .district-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .persons-table {
+    font-size: 12px;
+  }
+
+  .persons-table th,
+  .persons-table td {
+    padding: 8px 6px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+}
+

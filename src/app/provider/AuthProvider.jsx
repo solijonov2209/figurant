@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { fakeUsers } from "../../shared/utils/fakeUser";
+import adminService from "../../shared/services/adminService";
 
 const AuthContext = createContext(null);
 
@@ -7,24 +7,24 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
+  const [error, setError] = useState(null);
 
-  const login = (loginValue, passwordValue) => {
-    const foundUser = fakeUsers.find(
-      (u) =>
-        u.login === loginValue &&
-        u.password === passwordValue
-    );
+  const login = async (loginValue, passwordValue) => {
+    try {
+      setError(null);
+      const response = await adminService.login(loginValue, passwordValue);
+      const foundUser = response.data;
 
-    if (!foundUser) {
+      localStorage.setItem("isAuth", "true");
+      localStorage.setItem("user", JSON.stringify(foundUser));
+      localStorage.setItem("role", foundUser.role);
+
+      setUser(foundUser);
+      return true;
+    } catch (err) {
+      setError(err.message);
       return false;
     }
-
-    localStorage.setItem("isAuth", "true");
-    localStorage.setItem("user", JSON.stringify(foundUser));
-    localStorage.setItem("role", foundUser.role);
-
-    setUser(foundUser);
-    return true;
   };
 
   const logout = () => {
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, error }}>
       {children}
     </AuthContext.Provider>
   );
