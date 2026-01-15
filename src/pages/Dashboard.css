@@ -1,0 +1,41 @@
+.dashboard {
+  display: grid;
+  gap: 16px;
+}
+
+.dashboard__map {
+  height: 300px;
+  background: #bcd3f7;
+  border-radius: 16px;
+}
+
+.dashboard__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.card {
+  background: #bcd3f7;
+  padding: 14px;
+  border-radius: 12px;
+}
+
+.dashboard__btn {
+  background: #14a94a;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dashboard__list {
+  background: #bcd3f7;
+  height: 220px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

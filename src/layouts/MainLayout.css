@@ -1,0 +1,17 @@
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  height: 100vh;
+  background: #eef3fb;
+}
+
+.layout__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout__page {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
