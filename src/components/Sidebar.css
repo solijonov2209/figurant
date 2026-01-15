@@ -26,10 +26,23 @@
   border-radius: 10px;
   cursor: pointer;
   font-size: 15px;
+  transition: background 0.3s;
+}
+
+.sidebar__menu li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  width: 100%;
 }
 
 .sidebar__menu li:hover {
   background: rgba(255, 255, 255, 0.35);
+}
+
+.sidebar__menu li.active {
+  background: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
 }
 
 .sidebar__bottom {
@@ -39,4 +52,16 @@
   background: rgba(255, 255, 255, 0.3);
   text-align: center;
   cursor: pointer;
+  transition: background 0.3s;
+}
+
+.sidebar__bottom a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+}
+
+.sidebar__bottom:hover {
+  background: rgba(255, 255, 255, 0.5);
 }

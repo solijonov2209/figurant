@@ -10,11 +10,12 @@ export default function Login() {
   const [passwordValue, setPasswordValue] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = () => {
-    const success = login(loginValue, passwordValue);
+  const handleSubmit = async () => {
+    setError("");
+    const success = await login(loginValue, passwordValue);
 
     if (!success) {
-      setError("Login yoki parol noto‘g‘ri");
+      setError("Login yoki parol noto'g'ri");
       return;
     }
 
