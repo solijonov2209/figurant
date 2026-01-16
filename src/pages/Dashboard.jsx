@@ -71,70 +71,72 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
-      {/* Xarita */}
-      <div className="dashboard__map">
-        <svg viewBox="0 0 1000 600" className="namangan-map">
-          {/* Pop tumani */}
-          <g onClick={() => handleDistrictClick(1)} className="district" data-selected={selectedDistrict === 1}>
-            <path d="M 100 150 L 250 150 L 250 350 L 100 350 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="175" y="250" textAnchor="middle" fontSize="14" fontWeight="bold" fill="black">ПОП</text>
-          </g>
+      {/* Xarita - faqat Super Admin uchun */}
+      {user.role === "SUPER_ADMIN" && (
+        <div className="dashboard__map">
+          <svg viewBox="0 0 1000 600" className="namangan-map">
+            {/* Pop tumani */}
+            <g onClick={() => handleDistrictClick(1)} className="district" data-selected={selectedDistrict === 1}>
+              <path d="M 100 150 L 250 150 L 250 350 L 100 350 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="175" y="250" textAnchor="middle" fontSize="14" fontWeight="bold" fill="black">ПОП</text>
+            </g>
 
-          {/* Chust tumani */}
-          <g onClick={() => handleDistrictClick(2)} className="district" data-selected={selectedDistrict === 2}>
-            <path d="M 250 150 L 400 150 L 400 280 L 250 280 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="325" y="215" textAnchor="middle" fontSize="14" fontWeight="bold" fill="black">ЧУСТ</text>
-          </g>
+            {/* Chust tumani */}
+            <g onClick={() => handleDistrictClick(2)} className="district" data-selected={selectedDistrict === 2}>
+              <path d="M 250 150 L 400 150 L 400 280 L 250 280 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="325" y="215" textAnchor="middle" fontSize="14" fontWeight="bold" fill="black">ЧУСТ</text>
+            </g>
 
-          {/* Yangiqo'rg'on */}
-          <g onClick={() => handleDistrictClick(3)} className="district" data-selected={selectedDistrict === 3}>
-            <path d="M 100 350 L 300 350 L 300 500 L 100 500 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="200" y="425" textAnchor="middle" fontSize="12" fontWeight="bold" fill="black">ЯНГИҚЎРҒОН</text>
-          </g>
+            {/* Yangiqo'rg'on */}
+            <g onClick={() => handleDistrictClick(3)} className="district" data-selected={selectedDistrict === 3}>
+              <path d="M 100 350 L 300 350 L 300 500 L 100 500 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="200" y="425" textAnchor="middle" fontSize="12" fontWeight="bold" fill="black">ЯНГИҚЎРҒОН</text>
+            </g>
 
-          {/* Kosonsoy */}
-          <g onClick={() => handleDistrictClick(4)} className="district" data-selected={selectedDistrict === 4}>
-            <path d="M 400 180 L 550 180 L 550 320 L 400 320 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="475" y="250" textAnchor="middle" fontSize="12" fontWeight="bold" fill="black">КОСОНСОЙ</text>
-          </g>
+            {/* Kosonsoy */}
+            <g onClick={() => handleDistrictClick(4)} className="district" data-selected={selectedDistrict === 4}>
+              <path d="M 400 180 L 550 180 L 550 320 L 400 320 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="475" y="250" textAnchor="middle" fontSize="12" fontWeight="bold" fill="black">КОСОНСОЙ</text>
+            </g>
 
-          {/* Chortoq */}
-          <g onClick={() => handleDistrictClick(5)} className="district" data-selected={selectedDistrict === 5}>
-            <path d="M 550 200 L 650 200 L 650 300 L 550 300 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="600" y="250" textAnchor="middle" fontSize="12" fontWeight="bold" fill="black">ЧОРТОҚ</text>
-          </g>
+            {/* Chortoq */}
+            <g onClick={() => handleDistrictClick(5)} className="district" data-selected={selectedDistrict === 5}>
+              <path d="M 550 200 L 650 200 L 650 300 L 550 300 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="600" y="250" textAnchor="middle" fontSize="12" fontWeight="bold" fill="black">ЧОРТОҚ</text>
+            </g>
 
-          {/* Uychi */}
-          <g onClick={() => handleDistrictClick(6)} className="district" data-selected={selectedDistrict === 6}>
-            <path d="M 650 150 L 750 150 L 750 250 L 650 250 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="700" y="200" textAnchor="middle" fontSize="14" fontWeight="bold" fill="black">УЙЧИ</text>
-          </g>
+            {/* Uychi */}
+            <g onClick={() => handleDistrictClick(6)} className="district" data-selected={selectedDistrict === 6}>
+              <path d="M 650 150 L 750 150 L 750 250 L 650 250 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="700" y="200" textAnchor="middle" fontSize="14" fontWeight="bold" fill="black">УЙЧИ</text>
+            </g>
 
-          {/* Namangan */}
-          <g onClick={() => handleDistrictClick(7)} className="district" data-selected={selectedDistrict === 7}>
-            <path d="M 400 320 L 600 320 L 600 450 L 400 450 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="500" y="385" textAnchor="middle" fontSize="12" fontWeight="bold" fill="black">НАМАНГАН</text>
-          </g>
+            {/* Namangan */}
+            <g onClick={() => handleDistrictClick(7)} className="district" data-selected={selectedDistrict === 7}>
+              <path d="M 400 320 L 600 320 L 600 450 L 400 450 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="500" y="385" textAnchor="middle" fontSize="12" fontWeight="bold" fill="black">НАМАНГАН</text>
+            </g>
 
-          {/* Norin */}
-          <g onClick={() => handleDistrictClick(8)} className="district" data-selected={selectedDistrict === 8}>
-            <path d="M 750 180 L 900 180 L 900 300 L 750 300 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="825" y="240" textAnchor="middle" fontSize="14" fontWeight="bold" fill="black">НОРИН</text>
-          </g>
+            {/* Norin */}
+            <g onClick={() => handleDistrictClick(8)} className="district" data-selected={selectedDistrict === 8}>
+              <path d="M 750 180 L 900 180 L 900 300 L 750 300 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="825" y="240" textAnchor="middle" fontSize="14" fontWeight="bold" fill="black">НОРИН</text>
+            </g>
 
-          {/* Mingbuloq */}
-          <g onClick={() => handleDistrictClick(9)} className="district" data-selected={selectedDistrict === 9}>
-            <path d="M 600 350 L 750 350 L 750 480 L 600 480 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="675" y="415" textAnchor="middle" fontSize="11" fontWeight="bold" fill="black">МИНГБУЛОҚ</text>
-          </g>
+            {/* Mingbuloq */}
+            <g onClick={() => handleDistrictClick(9)} className="district" data-selected={selectedDistrict === 9}>
+              <path d="M 600 350 L 750 350 L 750 480 L 600 480 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="675" y="415" textAnchor="middle" fontSize="11" fontWeight="bold" fill="black">МИНГБУЛОҚ</text>
+            </g>
 
-          {/* To'raqo'rg'on */}
-          <g onClick={() => handleDistrictClick(10)} className="district" data-selected={selectedDistrict === 10}>
-            <path d="M 750 350 L 900 350 L 900 500 L 750 500 Z" fill="#50C878" stroke="white" strokeWidth="2" />
-            <text x="825" y="425" textAnchor="middle" fontSize="11" fontWeight="bold" fill="black">ТЎРАҚЎРҒОН</text>
-          </g>
-        </svg>
-      </div>
+            {/* To'raqo'rg'on */}
+            <g onClick={() => handleDistrictClick(10)} className="district" data-selected={selectedDistrict === 10}>
+              <path d="M 750 350 L 900 350 L 900 500 L 750 500 Z" fill="#50C878" stroke="white" strokeWidth="2" />
+              <text x="825" y="425" textAnchor="middle" fontSize="11" fontWeight="bold" fill="black">ТЎРАҚЎРҒОН</text>
+            </g>
+          </svg>
+        </div>
+      )}
 
       {/* Statistika */}
       <div className="dashboard__stats">
