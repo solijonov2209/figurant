@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
+import crimeTypeService from "../shared/services/crimeTypeService";
 import "./AddPerson.css";
 
 export default function AddPerson() {
@@ -20,6 +21,7 @@ export default function AddPerson() {
     carInfo: "",
     districtId: "",
     mahallaId: "",
+    crimeTypeId: "",
     additionalInfo: ""
   });
 
@@ -29,13 +31,15 @@ export default function AddPerson() {
 
   const [districts, setDistricts] = useState([]);
   const [mahallas, setMahallas] = useState([]);
+  const [crimeTypes, setCrimeTypes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  // Load districts
+  // Load districts and crime types
   useEffect(() => {
     loadDistricts();
+    loadCrimeTypes();
   }, []);
 
   const loadDistricts = async () => {
@@ -60,6 +64,15 @@ export default function AddPerson() {
       }
     } catch (err) {
       setError("Tumanlarni yuklashda xatolik: " + err.message);
+    }
+  };
+
+  const loadCrimeTypes = async () => {
+    try {
+      const response = await crimeTypeService.getAll();
+      setCrimeTypes(response.data);
+    } catch (err) {
+      setError("Jinoyat turlarini yuklashda xatolik: " + err.message);
     }
   };
 
@@ -124,9 +137,14 @@ export default function AddPerson() {
         throw new Error("Tuman va Mahalla majburiy");
       }
 
-      // Tuman va Mahalla nomlarini olish
+      if (!formData.crimeTypeId) {
+        throw new Error("Jinoyat turini tanlang");
+      }
+
+      // Tuman, Mahalla va Jinoyat turi nomlarini olish
       const district = districts.find(d => d.id === parseInt(formData.districtId));
       const mahalla = mahallas.find(m => m.id === parseInt(formData.mahallaId));
+      const crimeType = crimeTypes.find(ct => ct.id === parseInt(formData.crimeTypeId));
 
       // Ma'lumotni saqlash
       const personData = {
@@ -135,6 +153,8 @@ export default function AddPerson() {
         districtName: district.name,
         mahallaId: parseInt(formData.mahallaId),
         mahallaName: mahalla.name,
+        crimeTypeId: parseInt(formData.crimeTypeId),
+        crimeTypeName: crimeType.name,
         photoUrl: photoPreview, // Hozircha base64, keyinchalik server ga yuklanadi
         fingerprintUrl: fingerprintFile ? fingerprintFile.name : null
       };
@@ -167,6 +187,7 @@ export default function AddPerson() {
       carInfo: "",
       districtId: user.role === "JQB_ADMIN" ? user.districtId : "",
       mahallaId: user.role === "MAHALLA_INSPECTOR" ? user.mahallaId : "",
+      crimeTypeId: "",
       additionalInfo: ""
     });
     setPhotoFile(null);
@@ -305,6 +326,21 @@ export default function AddPerson() {
                 {mahallas.map(mahalla => (
                   <option key={mahalla.id} value={mahalla.id}>
                     {mahalla.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-row">
+              <select
+                value={formData.crimeTypeId}
+                onChange={(e) => setFormData({ ...formData, crimeTypeId: e.target.value })}
+                required
+              >
+                <option value="">Jinoyat turini tanlang:</option>
+                {crimeTypes.map(crimeType => (
+                  <option key={crimeType.id} value={crimeType.id}>
+                    {crimeType.name}
                   </option>
                 ))}
               </select>

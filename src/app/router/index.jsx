@@ -6,6 +6,7 @@ import InProcess from "../../pages/InProcess";
 import Search from "../../pages/Search";
 import Reports from "../../pages/Reports";
 import AddAdmin from "../../pages/AddAdmin";
+import CrimeTypes from "../../pages/CrimeTypes";
 import MainLayout from "../../layouts/MainLoyauts"
 import PrivateRoute from "./PrivateRoute";
 
@@ -28,6 +29,7 @@ export default function AppRouter() {
         <Route path="search" element={<Search />} />
         <Route path="reports" element={<Reports />} />
         <Route path="add-admin" element={<AddAdmin />} />
+        <Route path="crime-types" element={<CrimeTypes />} />
       </Route>
     </Routes>
   );
