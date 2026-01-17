@@ -31,13 +31,9 @@ class AdminService {
     return { data: adminWithoutPassword };
   }
 
-  // Barcha adminlarni olish (faqat Super Admin)
-  async getAll(user) {
+  // Barcha adminlarni olish
+  async getAll() {
     // Keyinchalik API: return axios.get('/admins')
-
-    if (user.role !== 'SUPER_ADMIN') {
-      throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
-    }
 
     // Parollarni o'chirish
     const adminsWithoutPasswords = this.admins.map(({ password, ...admin }) => admin);
@@ -109,21 +105,21 @@ class AdminService {
   }
 
   // Adminni tahrirlash (faqat Super Admin)
-  async update(id, adminData, user) {
-    // Keyinchalik API: return axios.put(`/admins/${id}`, { ...adminData, updatedBy: user.id })
+  async update(adminData, user) {
+    // Keyinchalik API: return axios.put(`/admins/${adminData.id}`, { ...adminData, updatedBy: user.id })
 
     if (user.role !== 'SUPER_ADMIN') {
       throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
     }
 
-    const index = this.admins.findIndex(a => a.id === id);
+    const index = this.admins.findIndex(a => a.id === adminData.id);
     if (index === -1) {
       throw new Error('Admin topilmadi');
     }
 
     // Login o'zgartirilayotgan bo'lsa, mavjudligini tekshirish
     if (adminData.login && adminData.login !== this.admins[index].login) {
-      const existingAdmin = this.admins.find(a => a.login === adminData.login);
+      const existingAdmin = this.admins.find(a => a.login === adminData.login && a.id !== adminData.id);
       if (existingAdmin) {
         throw new Error('Bu login band');
       }

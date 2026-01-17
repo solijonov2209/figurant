@@ -1,17 +1,48 @@
 .layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
+  display: flex;
   height: 100vh;
   background: #eef3fb;
+  overflow: hidden;
 }
 
 .layout__content {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0; /* Flexbox overflow fix */
 }
 
 .layout__page {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .layout__page {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    position: relative;
+  }
+
+  .layout__content {
+    width: 100%;
+  }
+
+  .layout__page {
+    padding: 12px;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout__page {
+    padding: 10px;
+  }
 }
