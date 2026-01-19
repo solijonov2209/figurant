@@ -42,6 +42,24 @@
   gap: 12px;
 }
 
+.add-to-process-button {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+}
+
+.add-to-process-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
 .download-button {
   background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
   color: white;

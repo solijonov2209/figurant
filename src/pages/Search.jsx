@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
@@ -6,6 +7,7 @@ import "./Search.css";
 
 export default function Search() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
     firstName: "",
@@ -22,7 +24,6 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState("");
-  const [selectedPerson, setSelectedPerson] = useState(null);
 
   useEffect(() => {
     loadDistricts();
@@ -87,7 +88,9 @@ export default function Search() {
     setError("");
   };
 
-  const handleAddToProcess = async (personId) => {
+  const handleAddToProcess = async (personId, e) => {
+    e.stopPropagation(); // Prevent row click navigation
+
     if (!confirm("Haqiqatan ham ishlovga qo'shmoqchimisiz?")) {
       return;
     }
@@ -99,14 +102,6 @@ export default function Search() {
     } catch (err) {
       alert("Xatolik: " + err.message);
     }
-  };
-
-  const handleViewDetails = (person) => {
-    setSelectedPerson(person);
-  };
-
-  const closeModal = () => {
-    setSelectedPerson(null);
   };
 
   return (
@@ -213,7 +208,11 @@ export default function Search() {
                 </thead>
                 <tbody>
                   {persons.map((person, index) => (
-                    <tr key={person.id}>
+                    <tr
+                      key={person.id}
+                      onClick={() => navigate(`/person/${person.id}`)}
+                      className="clickable-row"
+                    >
                       <td>{index + 1}</td>
                       <td>{person.lastName} {person.firstName} {person.middleName}</td>
                       <td>{person.birthDate}</td>
@@ -228,22 +227,14 @@ export default function Search() {
                         )}
                       </td>
                       <td>
-                        <div className="action-buttons">
+                        {(user.role === "SUPER_ADMIN" || user.role === "JQB_ADMIN") && !person.inProcess && (
                           <button
-                            className="btn-view"
-                            onClick={() => handleViewDetails(person)}
+                            className="btn-add-process"
+                            onClick={(e) => handleAddToProcess(person.id, e)}
                           >
-                            Ko'rish
+                            Ishlovga qo'shish
                           </button>
-                          {(user.role === "SUPER_ADMIN" || user.role === "JQB_ADMIN") && !person.inProcess && (
-                            <button
-                              className="btn-add-process"
-                              onClick={() => handleAddToProcess(person.id)}
-                            >
-                              Ishlovga qo'shish
-                            </button>
-                          )}
-                        </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -251,134 +242,6 @@ export default function Search() {
               </table>
             </div>
           )}
-        </div>
-      )}
-
-      {/* Modal - Batafsil ma'lumot */}
-      {selectedPerson && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>Shaxs haqida to'liq ma'lumot</h2>
-              <button className="close-button" onClick={closeModal}>×</button>
-            </div>
-
-            <div className="modal-body">
-              {selectedPerson.photoUrl && (
-                <div className="modal-photo">
-                  <img src={selectedPerson.photoUrl} alt="Rasm" />
-                </div>
-              )}
-
-              <div className="modal-info">
-                <div className="info-section">
-                  <h3>Shaxsiy ma'lumotlar</h3>
-                  <div className="info-row">
-                    <span className="label">Familiya:</span>
-                    <span className="value">{selectedPerson.lastName}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Ism:</span>
-                    <span className="value">{selectedPerson.firstName}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Otasining ismi:</span>
-                    <span className="value">{selectedPerson.middleName}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Tug'ilgan sana:</span>
-                    <span className="value">{selectedPerson.birthDate}</span>
-                  </div>
-                </div>
-
-                <div className="info-section">
-                  <h3>Hujjat ma'lumotlari</h3>
-                  <div className="info-row">
-                    <span className="label">Pasport seria:</span>
-                    <span className="value">{selectedPerson.passportSerial}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Pasport raqam:</span>
-                    <span className="value">{selectedPerson.passportNumber}</span>
-                  </div>
-                  {selectedPerson.carInfo && (
-                    <div className="info-row">
-                      <span className="label">Avtomobil:</span>
-                      <span className="value">{selectedPerson.carInfo}</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="info-section">
-                  <h3>Manzil</h3>
-                  <div className="info-row">
-                    <span className="label">Tuman:</span>
-                    <span className="value">{selectedPerson.districtName}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Mahalla:</span>
-                    <span className="value">{selectedPerson.mahallaName}</span>
-                  </div>
-                </div>
-
-                <div className="info-section">
-                  <h3>Qo'shimcha ma'lumot</h3>
-                  <p>{selectedPerson.additionalInfo || "Qo'shimcha ma'lumot yo'q"}</p>
-                </div>
-
-                <div className="info-section">
-                  <h3>Ro'yxatga olish ma'lumoti</h3>
-                  <div className="info-row">
-                    <span className="label">Ro'yxatga olgan:</span>
-                    <span className="value">{selectedPerson.registeredByName}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Telefon:</span>
-                    <span className="value">{selectedPerson.registeredByPhone}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Ro'yxatga olingan vaqt:</span>
-                    <span className="value">
-                      {new Date(selectedPerson.registeredAt).toLocaleString('uz-UZ')}
-                    </span>
-                  </div>
-                </div>
-
-                {selectedPerson.inProcess && (
-                  <div className="info-section">
-                    <h3>Ishlov ma'lumoti</h3>
-                    <div className="info-row">
-                      <span className="label">Ishlovga qo'shgan:</span>
-                      <span className="value">{selectedPerson.processedByName}</span>
-                    </div>
-                    <div className="info-row">
-                      <span className="label">Qo'shilgan vaqt:</span>
-                      <span className="value">
-                        {new Date(selectedPerson.processedAt).toLocaleString('uz-UZ')}
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="modal-footer">
-              {(user.role === "SUPER_ADMIN" || user.role === "JQB_ADMIN") && !selectedPerson.inProcess && (
-                <button
-                  className="add-process-button-large"
-                  onClick={() => {
-                    handleAddToProcess(selectedPerson.id);
-                    closeModal();
-                  }}
-                >
-                  Ishlovga qo'shish
-                </button>
-              )}
-              <button className="close-button-large" onClick={closeModal}>
-                Yopish
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>
