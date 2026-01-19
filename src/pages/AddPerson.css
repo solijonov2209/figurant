@@ -48,6 +48,9 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  align-self: start; /* Rasmni yuqoriga joylashtirish */
+  position: sticky;
+  top: 20px; /* Scroll qilganda yuqorida qolib turadi */
 }
 
 .photo-upload-box {
@@ -254,6 +257,11 @@
 @media (max-width: 768px) {
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .photo-section {
+    position: relative; /* Mobilda sticky emas, oddiy holatda */
+    top: 0;
   }
 
   .passport-row,
