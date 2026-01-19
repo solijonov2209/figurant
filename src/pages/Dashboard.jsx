@@ -216,7 +216,11 @@ export default function Dashboard() {
                 </thead>
                 <tbody>
                   {filteredPersons.map((person, index) => (
-                    <tr key={person.id}>
+                    <tr
+                      key={person.id}
+                      onClick={() => navigate(`/person/${person.id}`)}
+                      className="clickable-row"
+                    >
                       <td>{index + 1}</td>
                       <td>{person.lastName} {person.firstName}</td>
                       <td>{person.passportSerial} {person.passportNumber}</td>
@@ -257,7 +261,11 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {allPersons.slice(0, 10).map((person, index) => (
-                  <tr key={person.id}>
+                  <tr
+                    key={person.id}
+                    onClick={() => navigate(`/person/${person.id}`)}
+                    className="clickable-row"
+                  >
                     <td>{index + 1}</td>
                     <td>{person.lastName} {person.firstName}</td>
                     <td>{person.districtName}</td>
