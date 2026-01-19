@@ -208,6 +208,16 @@
   background-color: #f8f9fa;
 }
 
+.clickable-row {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clickable-row:hover {
+  background-color: #e3f2fd !important;
+  transform: scale(1.01);
+}
+
 .badge {
   padding: 4px 10px;
   border-radius: 12px;

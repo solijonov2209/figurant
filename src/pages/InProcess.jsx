@@ -6,9 +6,11 @@ import "./InProcess.css";
 export default function InProcess() {
   const { user } = useAuth();
   const [persons, setPersons] = useState([]);
+  const [filteredPersons, setFilteredPersons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedPerson, setSelectedPerson] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     loadPersons();
@@ -19,12 +21,31 @@ export default function InProcess() {
       setLoading(true);
       const response = await personService.getInProcess(user);
       setPersons(response.data);
+      setFilteredPersons(response.data);
     } catch (err) {
       setError("Ma'lumotlarni yuklashda xatolik: " + err.message);
     } finally {
       setLoading(false);
     }
   };
+
+  // Qidiruv filtri
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredPersons(persons);
+      return;
+    }
+
+    const filtered = persons.filter(person => {
+      const fullName = `${person.lastName} ${person.firstName} ${person.middleName}`.toLowerCase();
+      const passport = `${person.passportSerial}${person.passportNumber}`.toLowerCase();
+      const search = searchTerm.toLowerCase();
+
+      return fullName.includes(search) || passport.includes(search);
+    });
+
+    setFilteredPersons(filtered);
+  }, [searchTerm, persons]);
 
   const handleRemoveFromProcess = async (personId) => {
     if (!confirm("Haqiqatan ham ishlovdan chiqarmoqchimisiz?")) {
@@ -59,17 +80,42 @@ export default function InProcess() {
 
   return (
     <div className="in-process-container">
-      <h2 className="page-title">Ishlovdagi shaxslar</h2>
+      <div className="page-header">
+        <h2 className="page-title">Ishlovdagi shaxslar</h2>
+        <p className="page-subtitle">Jami: {persons.length} ta</p>
+      </div>
 
       {error && <div className="error-message">{error}</div>}
+
+      {/* Qidiruv */}
+      {persons.length > 0 && (
+        <div className="search-section">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Ism, familiya yoki pasport orqali qidirish..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {searchTerm && (
+            <button className="clear-search" onClick={() => setSearchTerm("")}>
+              ✕
+            </button>
+          )}
+        </div>
+      )}
 
       {persons.length === 0 ? (
         <div className="empty-state">
           <p>Hozircha ishlovdagi shaxslar yo'q</p>
         </div>
+      ) : filteredPersons.length === 0 ? (
+        <div className="empty-state">
+          <p>"{searchTerm}" bo'yicha natija topilmadi</p>
+        </div>
       ) : (
         <div className="persons-grid">
-          {persons.map((person) => (
+          {filteredPersons.map((person) => (
             <div key={person.id} className="person-card">
               <div className="person-card-header">
                 <h3>{person.lastName} {person.firstName}</h3>
