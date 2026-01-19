@@ -9,6 +9,7 @@ import AddAdmin from "../../pages/AddAdmin";
 import CrimeTypes from "../../pages/CrimeTypes";
 import Profile from "../../pages/Profile";
 import ManageAdmins from "../../pages/ManageAdmins";
+import PersonDetail from "../../pages/PersonDetail";
 import MainLayout from "../../layouts/MainLoyauts"
 import PrivateRoute from "./PrivateRoute";
 
@@ -34,6 +35,7 @@ export default function AppRouter() {
         <Route path="crime-types" element={<CrimeTypes />} />
         <Route path="profile" element={<Profile />} />
         <Route path="manage-admins" element={<ManageAdmins />} />
+        <Route path="person/:id" element={<PersonDetail />} />
       </Route>
     </Routes>
   );
