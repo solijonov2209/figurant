@@ -95,6 +95,21 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
     window.URL.revokeObjectURL(url);
   };
 
+  const handleAddToProcess = async () => {
+    if (!confirm("Haqiqatan ham ishlovga qo'shmoqchimisiz?")) {
+      return;
+    }
+
+    try {
+      await personService.addToProcess(person.id, user);
+      alert("Ishlovga qo'shildi");
+      // Reload person data to reflect the change
+      await loadPerson();
+    } catch (err) {
+      alert("Xatolik: " + err.message);
+    }
+  };
+
   if (loading) {
     return (
       <div className="person-detail-container">
@@ -122,6 +137,11 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
         </button>
         <h2 className="page-title">Shaxs Ma'lumotlari</h2>
         <div className="header-actions">
+          {!person.inProcess && (user.role === "SUPER_ADMIN" || user.role === "JQB_ADMIN") && (
+            <button className="add-to-process-button" onClick={handleAddToProcess}>
+              ➕ Ishlovga qo'shish
+            </button>
+          )}
           <button className="download-button" onClick={handleDownload}>
             📥 Yuklab olish
           </button>
