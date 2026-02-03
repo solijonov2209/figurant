@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import crimeCategoryService from "../shared/services/crimeCategoryService";
 import crimeTypeService from "../shared/services/crimeTypeService";
+import { Plus, Pencil, Trash2, X } from "lucide-react";
 import "./CrimeTypes.css";
 
 export default function CrimeTypes() {
@@ -154,7 +155,7 @@ export default function CrimeTypes() {
       <div className="page-header">
         <h2 className="page-title">Jinoyat turkumlari va turlari</h2>
         <button className="add-button" onClick={() => openCategoryModal()}>
-          ➕ Yangi turkum
+          <Plus size={16} /> Yangi turkum
         </button>
       </div>
 
@@ -176,13 +177,13 @@ export default function CrimeTypes() {
                   <h3 className="category-name">{category.name}</h3>
                   <div className="category-actions">
                     <button className="btn-add-type" onClick={() => openTypeModal(category.id)}>
-                      ➕
+                      <Plus size={16} />
                     </button>
                     <button className="edit-button" onClick={() => openCategoryModal(category)}>
-                      ✏️
+                      <Pencil size={16} />
                     </button>
                     <button className="delete-button" onClick={() => handleDeleteCategory(category.id)}>
-                      🗑️
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 </div>
@@ -197,10 +198,10 @@ export default function CrimeTypes() {
                         <span className="type-name">{type.name}</span>
                         <div className="type-actions">
                           <button className="edit-button" onClick={() => openTypeModal(category.id, type)}>
-                            ✏️
+                            <Pencil size={16} />
                           </button>
                           <button className="delete-button" onClick={() => handleDeleteType(type.id)}>
-                            🗑️
+                            <Trash2 size={16} />
                           </button>
                         </div>
                       </div>
@@ -223,7 +224,7 @@ export default function CrimeTypes() {
                   ? (editing ? "Turkumni tahrirlash" : "Yangi turkum qo'shish")
                   : (editing ? "Jinoyat turini tahrirlash" : "Yangi jinoyat turi qo'shish")}
               </h3>
-              <button className="close-button" onClick={closeModal}>✕</button>
+              <button className="close-button" onClick={closeModal}><X size={18} /></button>
             </div>
 
             <form onSubmit={handleSubmit}>

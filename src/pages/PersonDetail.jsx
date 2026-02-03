@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import personService from "../shared/services/personService";
+import { ArrowLeft, Plus, Download, User, Lock } from "lucide-react";
 import "./PersonDetail.css";
 
 export default function PersonDetail() {
@@ -124,7 +125,7 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
       <div className="person-detail-container">
         <div className="error-message">{error || "Shaxs topilmadi"}</div>
         <button className="back-button" onClick={() => navigate(-1)}>
-          ← Orqaga
+          <ArrowLeft size={18} /> Orqaga
         </button>
       </div>
     );
@@ -134,17 +135,17 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
     <div className="person-detail-container">
       <div className="detail-header">
         <button className="back-button" onClick={() => navigate(-1)}>
-          ← Orqaga
+          <ArrowLeft size={18} /> Orqaga
         </button>
         <h2 className="page-title">Shaxs Ma'lumotlari</h2>
         <div className="header-actions">
           {!person.inProcess && (user.role === "SUPER_ADMIN" || user.role === "JQB_ADMIN") && (
             <button className="add-to-process-button" onClick={handleAddToProcess}>
-              ➕ Ishlovga qo'shish
+              <Plus size={16} /> Ishlovga qo'shish
             </button>
           )}
           <button className="download-button" onClick={handleDownload}>
-            📥 Yuklab olish
+            <Download size={16} /> Yuklab olish
           </button>
         </div>
       </div>
@@ -156,14 +157,14 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
             <img src={person.photoUrl} alt="Shaxs rasmi" className="person-photo" />
           ) : (
             <div className="photo-placeholder">
-              <span className="photo-icon">👤</span>
+              <span className="photo-icon"><User size={48} /></span>
               <p>Rasm yuklanmagan</p>
             </div>
           )}
 
           {person.inProcess && (
             <div className="status-badge in-process">
-              ⚠️ Ishlovda
+              Ishlovda
             </div>
           )}
         </div>
@@ -276,7 +277,7 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
             <div className="info-card">
               <h3 className="card-title">Barmoq Izi</h3>
               <div className="info-item">
-                <p>🔒 Barmoq izi fayl: {person.fingerprintUrl}</p>
+                <p><Lock size={16} /> Barmoq izi fayl: {person.fingerprintUrl}</p>
               </div>
             </div>
           )}

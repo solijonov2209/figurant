@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
+import { Search as SearchIcon } from "lucide-react";
 import "./Search.css";
 
 export default function Search() {
@@ -175,7 +176,7 @@ export default function Search() {
             Tozalash
           </button>
           <button type="submit" className="search-button" disabled={loading}>
-            {loading ? "Qidirilmoqda..." : "🔍 Qidirish"}
+            {loading ? "Qidirilmoqda..." : <><SearchIcon size={16} /> Qidirish</>}
           </button>
         </div>
       </form>
