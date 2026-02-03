@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
+import "./Login.css";
 
 export default function Login() {
   const { login } = useAuth();
@@ -15,7 +16,7 @@ export default function Login() {
     const success = await login(loginValue, passwordValue);
 
     if (!success) {
-      setError("Login yoki parol noto'g'ri");
+      setError("Login yoki parol noto‘g‘ri");
       return;
     }
 
@@ -23,27 +24,38 @@ export default function Login() {
   };
 
   return (
-    <div style={{ padding: 40 }}>
-      <h2>Kirish</h2>
+    <div className="login-page">
+      <div className="overlay"></div>
 
-      <input
-        placeholder="Login"
-        value={loginValue}
-        onChange={(e) => setLoginValue(e.target.value)}
-      />
-      <br /><br />
+      <div className="login-wrapper">
+        <div className="login-box">
+          
+          <div className="logo">
+            <img src="/logo.png" alt="Logo" />
+          </div>
 
-      <input
-        type="password"
-        placeholder="Parol"
-        value={passwordValue}
-        onChange={(e) => setPasswordValue(e.target.value)}
-      />
-      <br /><br />
+          <input
+            className="login-input"
+            placeholder="Login"
+            value={loginValue}
+            onChange={(e) => setLoginValue(e.target.value)}
+          />
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+          <input
+            className="login-input"
+            type="password"
+            placeholder="Parol"
+            value={passwordValue}
+            onChange={(e) => setPasswordValue(e.target.value)}
+          />
 
-      <button onClick={handleSubmit}>Kirish</button>
+          {error && <p className="error-text">{error}</p>}
+
+          <button className="login-button" onClick={handleSubmit}>
+            Kirish
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
