@@ -5,7 +5,7 @@ import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
 import crimeCategoryService from "../shared/services/crimeCategoryService";
 import crimeTypeService from "../shared/services/crimeTypeService";
-import { Upload, Lock } from "lucide-react";
+import { Upload, Lock, Scale, X } from "lucide-react";
 import "./AddPerson.css";
 
 export default function AddPerson() {
@@ -40,6 +40,15 @@ export default function AddPerson() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const [isSudlangan, setIsSudlangan] = useState(false);
+  const [sudModalOpen, setSudModalOpen] = useState(false);
+  const [sudData, setSudData] = useState({
+    sudNomi: "",
+    sudSana: "",
+    hukmTuri: "",
+    jazoMuddeti: ""
+  });
 
   useEffect(() => {
     loadDistricts();
@@ -95,6 +104,19 @@ export default function AddPerson() {
     setSelectedCategoryId(e.target.value);
     setFormData({ ...formData, crimeTypeId: "" });
     setFilteredCrimeTypes(crimeTypes.filter(ct => ct.categoryId === categoryId));
+  };
+
+  const handleSudlaganChange = (e) => {
+    setIsSudlangan(e.target.checked);
+    if (e.target.checked) {
+      setSudModalOpen(true);
+    } else {
+      setSudData({ sudNomi: "", sudSana: "", hukmTuri: "", jazoMuddeti: "" });
+    }
+  };
+
+  const closeSudModal = () => {
+    setSudModalOpen(false);
   };
 
   const loadMahallas = async (districtId) => {
@@ -180,7 +202,9 @@ export default function AddPerson() {
         crimeTypeId: parseInt(formData.crimeTypeId),
         crimeTypeName: crimeType.name,
         photoUrl: photoPreview,
-        fingerprintUrl: fingerprintFile ? fingerprintFile.name : null
+        fingerprintUrl: fingerprintFile ? fingerprintFile.name : null,
+        sudlangan: isSudlangan,
+        ...(isSudlangan ? sudData : {})
       };
 
       await personService.create(personData, user);
@@ -219,6 +243,9 @@ export default function AddPerson() {
     setPhotoFile(null);
     setPhotoPreview(null);
     setFingerprintFile(null);
+    setIsSudlangan(false);
+    setSudModalOpen(false);
+    setSudData({ sudNomi: "", sudSana: "", hukmTuri: "", jazoMuddeti: "" });
     setError("");
     setSuccess(false);
   };
@@ -385,6 +412,21 @@ export default function AddPerson() {
                 ))}
               </select>
             </div>
+            <div className="form-row sudlangan-row">
+              <label className="sudlangan-label">
+                <input type="checkbox" checked={isSudlangan} onChange={handleSudlaganChange} />
+                <span>Sudlangan mi?</span>
+              </label>
+              {isSudlangan && (
+                <button
+                  type="button"
+                  className={`sud-info-badge ${sudData.sudNomi ? "" : "sud-info-badge--empty"}`}
+                  onClick={() => setSudModalOpen(true)}
+                >
+                  <Scale size={14} /> {sudData.sudNomi ? "Sud ma'lumotlari kiritilgan" : "Sud ma'lumotlarini kiriting"}
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -424,6 +466,46 @@ export default function AddPerson() {
           </button>
         </div>
       </form>
+
+      {/* Sud ma'lumotlari modal */}
+      {sudModalOpen && (
+        <div className="sud-modal-overlay" onClick={closeSudModal}>
+          <div className="sud-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="sud-modal-header">
+              <h3><Scale size={18} /> Sud ma'lumotlari</h3>
+              <button className="sud-modal-close" onClick={closeSudModal}><X size={18} /></button>
+            </div>
+            <div className="sud-modal-body">
+              <input
+                type="text"
+                placeholder="Sud nomi:"
+                value={sudData.sudNomi}
+                onChange={(e) => setSudData({ ...sudData, sudNomi: e.target.value })}
+              />
+              <input
+                type="date"
+                value={sudData.sudSana}
+                onChange={(e) => setSudData({ ...sudData, sudSana: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Hukm turi:"
+                value={sudData.hukmTuri}
+                onChange={(e) => setSudData({ ...sudData, hukmTuri: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Jazo muddeti:"
+                value={sudData.jazoMuddeti}
+                onChange={(e) => setSudData({ ...sudData, jazoMuddeti: e.target.value })}
+              />
+            </div>
+            <div className="sud-modal-footer">
+              <button type="button" onClick={closeSudModal} className="sud-modal-confirm">Saqlash</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
