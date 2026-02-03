@@ -251,6 +251,8 @@ export const persons = [
     mahallaName: "Guliston",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Oldindan sudlangan",
     photoUrl: null,
     fingerprintUrl: null,
@@ -261,7 +263,12 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: true,
+    sudNomi: "Pop tumani sudyasi",
+    sudSana: "2020-03-15",
+    hukmTuri: "Shartli hukm",
+    jazoMuddeti: "2 yil"
   },
   {
     id: 2,
@@ -278,6 +285,8 @@ export const persons = [
     mahallaName: "Guliston",
     crimeTypeId: 4,
     crimeTypeName: "Narkotik moddalar",
+    crimeCategoryId: 2,
+    crimeCategoryName: "Narkotik jinoyatlar",
     additionalInfo: "Giyohvand moddalar bilan bog'liq jinoyat",
     photoUrl: null,
     fingerprintUrl: null,
@@ -288,7 +297,8 @@ export const persons = [
     inProcess: true,
     processedBy: 2,
     processedByName: "Bobur Umarov",
-    processedAt: "2025-01-11T14:20:00Z"
+    processedAt: "2025-01-11T14:20:00Z",
+    sudlangan: false
   },
   {
     id: 3,
@@ -305,6 +315,8 @@ export const persons = [
     mahallaName: "Yangiobod",
     crimeTypeId: 1,
     crimeTypeName: "O'g'irlik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "O'g'irlik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -315,7 +327,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 4,
@@ -332,6 +345,8 @@ export const persons = [
     mahallaName: "Yangiobod",
     crimeTypeId: 5,
     crimeTypeName: "Huliganliq",
+    crimeCategoryId: 3,
+    crimeCategoryName: "Shiddatli jinoyatlar",
     additionalInfo: "Huliganliq",
     photoUrl: null,
     fingerprintUrl: null,
@@ -342,7 +357,8 @@ export const persons = [
     inProcess: true,
     processedBy: 2,
     processedByName: "Bobur Umarov",
-    processedAt: "2025-01-09T09:00:00Z"
+    processedAt: "2025-01-09T09:00:00Z",
+    sudlangan: false
   },
   {
     id: 5,
@@ -359,6 +375,8 @@ export const persons = [
     mahallaName: "Chust",
     crimeTypeId: 3,
     crimeTypeName: "Firibgarlik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "Firibgarlik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -369,7 +387,12 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: true,
+    sudNomi: "Chust tumani sudyasi",
+    sudSana: "2019-08-10",
+    hukmTuri: "Haqiqiy hukm",
+    jazoMuddeti: "3 yil 6 ay"
   },
   {
     id: 6,
@@ -386,6 +409,8 @@ export const persons = [
     mahallaName: "Pakhtaobod",
     crimeTypeId: 4,
     crimeTypeName: "Narkotik moddalar",
+    crimeCategoryId: 2,
+    crimeCategoryName: "Narkotik jinoyatlar",
     additionalInfo: "Narkotik moddalar tarqatish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -396,7 +421,8 @@ export const persons = [
     inProcess: true,
     processedBy: 3,
     processedByName: "Dilshod Rahimov",
-    processedAt: "2025-01-12T16:30:00Z"
+    processedAt: "2025-01-12T16:30:00Z",
+    sudlangan: false
   },
   {
     id: 7,
@@ -413,6 +439,8 @@ export const persons = [
     mahallaName: "Tinchlik",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Boshliq bilan kelishmovchilik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -423,7 +451,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 8,
@@ -440,6 +469,8 @@ export const persons = [
     mahallaName: "Markaziy",
     crimeTypeId: 2,
     crimeTypeName: "Talonchilik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "Talontchilik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -450,7 +481,8 @@ export const persons = [
     inProcess: true,
     processedBy: 4,
     processedByName: "Eldor Tursunov",
-    processedAt: "2025-01-11T10:15:00Z"
+    processedAt: "2025-01-11T10:15:00Z",
+    sudlangan: false
   },
   {
     id: 9,
@@ -467,6 +499,8 @@ export const persons = [
     mahallaName: "Chinobod",
     crimeTypeId: 6,
     crimeTypeName: "Oila zo'ravonligi",
+    crimeCategoryId: 3,
+    crimeCategoryName: "Shiddatli jinoyatlar",
     additionalInfo: "Oila zo'ravonligi",
     photoUrl: null,
     fingerprintUrl: null,
@@ -477,7 +511,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 10,
@@ -494,6 +529,8 @@ export const persons = [
     mahallaName: "Ittifaq",
     crimeTypeId: 5,
     crimeTypeName: "Huliganliq",
+    crimeCategoryId: 3,
+    crimeCategoryName: "Shiddatli jinoyatlar",
     additionalInfo: "Jamoat joyida tartibsizlik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -504,7 +541,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 11,
@@ -521,6 +559,8 @@ export const persons = [
     mahallaName: "Kosonsoy",
     crimeTypeId: 9,
     crimeTypeName: "Qaroqchilik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "Qaroqchilik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -531,7 +571,8 @@ export const persons = [
     inProcess: true,
     processedBy: 5,
     processedByName: "Farrux Qodirov",
-    processedAt: "2025-01-12T08:45:00Z"
+    processedAt: "2025-01-12T08:45:00Z",
+    sudlangan: false
   },
   {
     id: 12,
@@ -548,6 +589,8 @@ export const persons = [
     mahallaName: "Vodil",
     crimeTypeId: 1,
     crimeTypeName: "O'g'irlik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "Avtomobil o'g'irlash",
     photoUrl: null,
     fingerprintUrl: null,
@@ -558,7 +601,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 13,
@@ -575,6 +619,8 @@ export const persons = [
     mahallaName: "Xo'jaobod",
     crimeTypeId: 8,
     crimeTypeName: "Dokument qalbakilashtirish",
+    crimeCategoryId: 4,
+    crimeCategoryName: "Nohuquqiy hujjatlar",
     additionalInfo: "Dokument qalbakilashtirish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -585,7 +631,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 14,
@@ -602,6 +649,8 @@ export const persons = [
     mahallaName: "Dustlik",
     crimeTypeId: 3,
     crimeTypeName: "Firibgarlik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "Pul yuvish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -612,7 +661,12 @@ export const persons = [
     inProcess: true,
     processedBy: 1,
     processedByName: "Aziz Karimov",
-    processedAt: "2025-01-09T11:20:00Z"
+    processedAt: "2025-01-09T11:20:00Z",
+    sudlangan: true,
+    sudNomi: "Namangan viloyat sudyasi",
+    sudSana: "2021-11-22",
+    hukmTuri: "Haqiqiy hukm",
+    jazoMuddeti: "5 yil"
   },
   {
     id: 15,
@@ -629,6 +683,8 @@ export const persons = [
     mahallaName: "Navbahor",
     crimeTypeId: 4,
     crimeTypeName: "Narkotik moddalar",
+    crimeCategoryId: 2,
+    crimeCategoryName: "Narkotik jinoyatlar",
     additionalInfo: "Narkotik moddalarni qonuniy bo'lmagan saqlash",
     photoUrl: null,
     fingerprintUrl: null,
@@ -639,7 +695,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 16,
@@ -656,6 +713,8 @@ export const persons = [
     mahallaName: "Bog'bon",
     crimeTypeId: 7,
     crimeTypeName: "Pora olish",
+    crimeCategoryId: 4,
+    crimeCategoryName: "Nohuquqiy hujjatlar",
     additionalInfo: "Pora olish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -666,7 +725,8 @@ export const persons = [
     inProcess: true,
     processedBy: 3,
     processedByName: "Dilshod Rahimov",
-    processedAt: "2025-01-12T10:30:00Z"
+    processedAt: "2025-01-12T10:30:00Z",
+    sudlangan: false
   },
   {
     id: 17,
@@ -683,6 +743,8 @@ export const persons = [
     mahallaName: "Zarafshon",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Davlat mulkini buzish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -693,7 +755,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 18,
@@ -710,6 +773,8 @@ export const persons = [
     mahallaName: "Gulbahor",
     crimeTypeId: 3,
     crimeTypeName: "Firibgarlik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "Internet orqali aldov",
     photoUrl: null,
     fingerprintUrl: null,
@@ -720,7 +785,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 19,
@@ -737,6 +803,8 @@ export const persons = [
     mahallaName: "Yoshlik",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Qimor o'ynash",
     photoUrl: null,
     fingerprintUrl: null,
@@ -747,7 +815,8 @@ export const persons = [
     inProcess: true,
     processedBy: 4,
     processedByName: "Eldor Tursunov",
-    processedAt: "2025-01-10T09:20:00Z"
+    processedAt: "2025-01-10T09:20:00Z",
+    sudlangan: false
   },
   {
     id: 20,
@@ -764,6 +833,8 @@ export const persons = [
     mahallaName: "Sharq",
     crimeTypeId: 6,
     crimeTypeName: "Oila zo'ravonligi",
+    crimeCategoryId: 3,
+    crimeCategoryName: "Shiddatli jinoyatlar",
     additionalInfo: "Qasd qilish urinishi",
     photoUrl: null,
     fingerprintUrl: null,
@@ -774,7 +845,12 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: true,
+    sudNomi: "Kosonsoy tumani sudyasi",
+    sudSana: "2022-01-14",
+    hukmTuri: "Shartli hukm",
+    jazoMuddeti: "1 yil 3 ay"
   },
   {
     id: 21,
@@ -791,6 +867,8 @@ export const persons = [
     mahallaName: "Samarkand",
     crimeTypeId: 5,
     crimeTypeName: "Huliganliq",
+    crimeCategoryId: 3,
+    crimeCategoryName: "Shiddatli jinoyatlar",
     additionalInfo: "Ichkilikbozlik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -801,7 +879,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 22,
@@ -818,6 +897,8 @@ export const persons = [
     mahallaName: "Chortoq",
     crimeTypeId: 5,
     crimeTypeName: "Huliganliq",
+    crimeCategoryId: 3,
+    crimeCategoryName: "Shiddatli jinoyatlar",
     additionalInfo: "Ko'chada bezorilik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -828,7 +909,8 @@ export const persons = [
     inProcess: true,
     processedBy: 1,
     processedByName: "Aziz Karimov",
-    processedAt: "2025-01-11T16:15:00Z"
+    processedAt: "2025-01-11T16:15:00Z",
+    sudlangan: false
   },
   {
     id: 23,
@@ -845,6 +927,8 @@ export const persons = [
     mahallaName: "Qo'rg'ontepa",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Qurol saqlash",
     photoUrl: null,
     fingerprintUrl: null,
@@ -855,7 +939,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 24,
@@ -872,6 +957,8 @@ export const persons = [
     mahallaName: "Uychi",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Xafsizlik to'g'risidagi qoidalarni buzish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -882,7 +969,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 25,
@@ -899,6 +987,8 @@ export const persons = [
     mahallaName: "Olmazor",
     crimeTypeId: 8,
     crimeTypeName: "Dokument qalbakilashtirish",
+    crimeCategoryId: 4,
+    crimeCategoryName: "Nohuquqiy hujjatlar",
     additionalInfo: "Yolg'on guvohlik berish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -909,7 +999,8 @@ export const persons = [
     inProcess: true,
     processedBy: 1,
     processedByName: "Aziz Karimov",
-    processedAt: "2025-01-12T14:00:00Z"
+    processedAt: "2025-01-12T14:00:00Z",
+    sudlangan: false
   },
   {
     id: 26,
@@ -926,6 +1017,8 @@ export const persons = [
     mahallaName: "Istiqlol",
     crimeTypeId: 3,
     crimeTypeName: "Firibgarlik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "Ishonchni suiste'mol qilish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -936,7 +1029,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 27,
@@ -953,6 +1047,8 @@ export const persons = [
     mahallaName: "Mustaqillik",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Harbiy xizmatdan qochish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -963,7 +1059,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 28,
@@ -980,6 +1077,8 @@ export const persons = [
     mahallaName: "Norin",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Cheklangan hududga kirish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -990,7 +1089,8 @@ export const persons = [
     inProcess: true,
     processedBy: 1,
     processedByName: "Aziz Karimov",
-    processedAt: "2025-01-10T12:45:00Z"
+    processedAt: "2025-01-10T12:45:00Z",
+    sudlangan: false
   },
   {
     id: 29,
@@ -1007,6 +1107,8 @@ export const persons = [
     mahallaName: "Qahramon",
     crimeTypeId: 3,
     crimeTypeName: "Firibgarlik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "Soxta pul yasash",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1017,7 +1119,12 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: true,
+    sudNomi: "Norin tumani sudyasi",
+    sudSana: "2018-06-30",
+    hukmTuri: "Haqiqiy hukm",
+    jazoMuddeti: "4 yil"
   },
   {
     id: 30,
@@ -1034,6 +1141,8 @@ export const persons = [
     mahallaName: "Mingbuloq",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Yong'in xavfsizligi qoidalarini buzish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1044,7 +1153,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 31,
@@ -1061,6 +1171,8 @@ export const persons = [
     mahallaName: "Xalqobod",
     crimeTypeId: 7,
     crimeTypeName: "Pora olish",
+    crimeCategoryId: 4,
+    crimeCategoryName: "Nohuquqiy hujjatlar",
     additionalInfo: "Davlat lavozimini suiste'mol qilish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1071,7 +1183,8 @@ export const persons = [
     inProcess: true,
     processedBy: 1,
     processedByName: "Aziz Karimov",
-    processedAt: "2025-01-11T11:50:00Z"
+    processedAt: "2025-01-11T11:50:00Z",
+    sudlangan: false
   },
   {
     id: 32,
@@ -1088,6 +1201,8 @@ export const persons = [
     mahallaName: "To'raqo'rg'on",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Zaharli moddalarni saqlash",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1098,7 +1213,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 33,
@@ -1115,6 +1231,8 @@ export const persons = [
     mahallaName: "Dehqonobod",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "O'z-o'zini adliya qilish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1125,7 +1243,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 34,
@@ -1142,6 +1261,8 @@ export const persons = [
     mahallaName: "Dustlik",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Xalqaro qidiruv",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1152,7 +1273,8 @@ export const persons = [
     inProcess: true,
     processedBy: 2,
     processedByName: "Bobur Umarov",
-    processedAt: "2025-01-10T10:00:00Z"
+    processedAt: "2025-01-10T10:00:00Z",
+    sudlangan: false
   },
   {
     id: 35,
@@ -1169,6 +1291,8 @@ export const persons = [
     mahallaName: "Tinchlik",
     crimeTypeId: 3,
     crimeTypeName: "Firibgarlik",
+    crimeCategoryId: 1,
+    crimeCategoryName: "Mol-mulkka qaydli jinoyatlar",
     additionalInfo: "Soliq to'lamaslik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1179,7 +1303,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 36,
@@ -1196,6 +1321,8 @@ export const persons = [
     mahallaName: "Gulbahor",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Noqonuniy savdo",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1206,7 +1333,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 37,
@@ -1223,6 +1351,8 @@ export const persons = [
     mahallaName: "G'arb",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Ruxsatsiz qurilish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1233,7 +1363,8 @@ export const persons = [
     inProcess: true,
     processedBy: 5,
     processedByName: "Farrux Qodirov",
-    processedAt: "2025-01-13T16:40:00Z"
+    processedAt: "2025-01-13T16:40:00Z",
+    sudlangan: false
   },
   {
     id: 38,
@@ -1250,6 +1381,8 @@ export const persons = [
     mahallaName: "Madaniyat",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Tibbiy yordam ko'rsatmaslik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1260,7 +1393,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 39,
@@ -1277,6 +1411,8 @@ export const persons = [
     mahallaName: "Panjob",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Axborotni yashirish",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1287,7 +1423,8 @@ export const persons = [
     inProcess: false,
     processedBy: null,
     processedByName: null,
-    processedAt: null
+    processedAt: null,
+    sudlangan: false
   },
   {
     id: 40,
@@ -1304,6 +1441,8 @@ export const persons = [
     mahallaName: "O'zbekiston",
     crimeTypeId: 10,
     crimeTypeName: "Boshqa",
+    crimeCategoryId: 5,
+    crimeCategoryName: "Boshqa jinoyatlar",
     additionalInfo: "Qonuniy kuchga kirgan sud qarorini ijro etmaslik",
     photoUrl: null,
     fingerprintUrl: null,
@@ -1314,6 +1453,7 @@ export const persons = [
     inProcess: true,
     processedBy: 1,
     processedByName: "Aziz Karimov",
-    processedAt: "2025-01-11T13:25:00Z"
+    processedAt: "2025-01-11T13:25:00Z",
+    sudlangan: false
   }
 ];
