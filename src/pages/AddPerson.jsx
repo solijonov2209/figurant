@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
+import crimeCategoryService from "../shared/services/crimeCategoryService";
 import crimeTypeService from "../shared/services/crimeTypeService";
 import "./AddPerson.css";
 
@@ -31,14 +32,17 @@ export default function AddPerson() {
 
   const [districts, setDistricts] = useState([]);
   const [mahallas, setMahallas] = useState([]);
+  const [crimeCategories, setCrimeCategories] = useState([]);
   const [crimeTypes, setCrimeTypes] = useState([]);
+  const [filteredCrimeTypes, setFilteredCrimeTypes] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  // Load districts and crime types
   useEffect(() => {
     loadDistricts();
+    loadCrimeCategories();
     loadCrimeTypes();
   }, []);
 
@@ -67,6 +71,15 @@ export default function AddPerson() {
     }
   };
 
+  const loadCrimeCategories = async () => {
+    try {
+      const response = await crimeCategoryService.getAll();
+      setCrimeCategories(response.data);
+    } catch (err) {
+      setError("Turkumlarni yuklashda xatolik: " + err.message);
+    }
+  };
+
   const loadCrimeTypes = async () => {
     try {
       const response = await crimeTypeService.getAll();
@@ -74,6 +87,13 @@ export default function AddPerson() {
     } catch (err) {
       setError("Jinoyat turlarini yuklashda xatolik: " + err.message);
     }
+  };
+
+  const handleCategoryChange = (e) => {
+    const categoryId = parseInt(e.target.value);
+    setSelectedCategoryId(e.target.value);
+    setFormData({ ...formData, crimeTypeId: "" });
+    setFilteredCrimeTypes(crimeTypes.filter(ct => ct.categoryId === categoryId));
   };
 
   const loadMahallas = async (districtId) => {
@@ -141,10 +161,11 @@ export default function AddPerson() {
         throw new Error("Jinoyat turini tanlang");
       }
 
-      // Tuman, Mahalla va Jinoyat turi nomlarini olish
+      // Tuman, Mahalla, Turkum va Jinoyat turi nomlarini olish
       const district = districts.find(d => d.id === parseInt(formData.districtId));
       const mahalla = mahallas.find(m => m.id === parseInt(formData.mahallaId));
       const crimeType = crimeTypes.find(ct => ct.id === parseInt(formData.crimeTypeId));
+      const crimeCategory = crimeCategories.find(c => c.id === parseInt(selectedCategoryId));
 
       // Ma'lumotni saqlash
       const personData = {
@@ -153,9 +174,11 @@ export default function AddPerson() {
         districtName: district.name,
         mahallaId: parseInt(formData.mahallaId),
         mahallaName: mahalla.name,
+        crimeCategoryId: parseInt(selectedCategoryId),
+        crimeCategoryName: crimeCategory.name,
         crimeTypeId: parseInt(formData.crimeTypeId),
         crimeTypeName: crimeType.name,
-        photoUrl: photoPreview, // Hozircha base64, keyinchalik server ga yuklanadi
+        photoUrl: photoPreview,
         fingerprintUrl: fingerprintFile ? fingerprintFile.name : null
       };
 
@@ -190,6 +213,8 @@ export default function AddPerson() {
       crimeTypeId: "",
       additionalInfo: ""
     });
+    setSelectedCategoryId("");
+    setFilteredCrimeTypes([]);
     setPhotoFile(null);
     setPhotoPreview(null);
     setFingerprintFile(null);
@@ -331,16 +356,30 @@ export default function AddPerson() {
               </select>
             </div>
 
-            <div className="form-row">
+            <div className="form-row dropdown-row">
+              <select
+                value={selectedCategoryId}
+                onChange={handleCategoryChange}
+                required
+              >
+                <option value="">Turkum:</option>
+                {crimeCategories.map(cat => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+
               <select
                 value={formData.crimeTypeId}
                 onChange={(e) => setFormData({ ...formData, crimeTypeId: e.target.value })}
                 required
+                disabled={!selectedCategoryId}
               >
-                <option value="">Jinoyat turini tanlang:</option>
-                {crimeTypes.map(crimeType => (
-                  <option key={crimeType.id} value={crimeType.id}>
-                    {crimeType.name}
+                <option value="">Jinoyat turi:</option>
+                {filteredCrimeTypes.map(type => (
+                  <option key={type.id} value={type.id}>
+                    {type.name}
                   </option>
                 ))}
               </select>

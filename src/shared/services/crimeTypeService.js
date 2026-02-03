@@ -5,9 +5,10 @@ import { crimeTypes as mockCrimeTypes } from '../data/crimeTypes';
 
 class CrimeTypeService {
   constructor() {
-    // LocalStorage dan ma'lumotlarni yuklash
-    const savedCrimeTypes = localStorage.getItem('crimeTypes');
-    this.crimeTypes = savedCrimeTypes ? JSON.parse(savedCrimeTypes) : [...mockCrimeTypes];
+    const saved = localStorage.getItem('crimeTypes');
+    const parsed = saved ? JSON.parse(saved) : null;
+    // Eski ma'lumotlarda categoryId yo'q bo'lsa, mockdata qaytarish (migration)
+    this.crimeTypes = (parsed && parsed[0] && parsed[0].categoryId) ? parsed : [...mockCrimeTypes];
   }
 
   // Ma'lumotlarni saqlash
@@ -17,13 +18,17 @@ class CrimeTypeService {
 
   // Barcha jinoyat turlarini olish
   async getAll() {
-    // Keyinchalik API: return axios.get('/crime-types')
     return { data: [...this.crimeTypes] };
+  }
+
+  // Turkum (categoryId) bo'yicha jinoyat turlarini olish
+  async getByCategoryId(categoryId) {
+    const filtered = this.crimeTypes.filter(ct => ct.categoryId === categoryId);
+    return { data: filtered };
   }
 
   // ID bo'yicha jinoyat turini olish
   async getById(id) {
-    // Keyinchalik API: return axios.get(`/crime-types/${id}`)
     const crimeType = this.crimeTypes.find(ct => ct.id === id);
     if (!crimeType) {
       throw new Error('Jinoyat turi topilmadi');
@@ -33,15 +38,18 @@ class CrimeTypeService {
 
   // Jinoyat turi qo'shish (faqat Super Admin)
   async create(crimeTypeData, user) {
-    // Keyinchalik API: return axios.post('/crime-types', crimeTypeData)
-
     if (user.role !== 'SUPER_ADMIN') {
       throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
     }
 
-    // Mavjudligini tekshirish
+    if (!crimeTypeData.categoryId) {
+      throw new Error('Turkum tanlash zarur');
+    }
+
+    // Bir turkumda bir xil nom tekshirish
     const exists = this.crimeTypes.find(ct =>
-      ct.name.toLowerCase() === crimeTypeData.name.toLowerCase()
+      ct.name.toLowerCase() === crimeTypeData.name.toLowerCase() &&
+      ct.categoryId === crimeTypeData.categoryId
     );
 
     if (exists) {
@@ -51,6 +59,7 @@ class CrimeTypeService {
     const newCrimeType = {
       id: Math.max(...this.crimeTypes.map(ct => ct.id), 0) + 1,
       name: crimeTypeData.name,
+      categoryId: crimeTypeData.categoryId,
       createdAt: new Date().toISOString()
     };
 
