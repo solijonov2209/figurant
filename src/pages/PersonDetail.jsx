@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import personService from "../shared/services/personService";
-import { ArrowLeft, Plus, Download, User, Lock } from "lucide-react";
+import { ArrowLeft, Plus, Download, User, Lock, Scale } from "lucide-react";
 import "./PersonDetail.css";
 
 export default function PersonDetail() {
@@ -68,6 +68,11 @@ JINOYAT MA'LUMOTLARI:
 Turkum:             ${person.crimeCategoryName || "Ma'lumot yo'q"}
 Jinoyat turi:       ${person.crimeTypeName || "Ma'lumot yo'q"}
 Qo'shimcha:         ${person.additionalInfo || "Ma'lumot yo'q"}
+
+SUD MA'LUMOTLARI:
+-----------------------------------
+Sudlangan:          ${person.sudlangan ? "Ha" : "Yo'q"}
+${person.sudlangan ? `Sud nomi:           ${person.sudNomi}\nSud sana:           ${person.sudSana}\nHukm turi:          ${person.hukmTuri}\nJazo muddeti:       ${person.jazoMuddeti}` : ''}
 
 RO'YXATGA OLISH:
 -----------------------------------
@@ -167,6 +172,11 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
               Ishlovda
             </div>
           )}
+          {person.sudlangan && (
+            <div className="status-badge sudlangan">
+              <Scale size={16} /> Sudlangan
+            </div>
+          )}
         </div>
 
         {/* Info Section */}
@@ -238,6 +248,30 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
               </div>
             </div>
           </div>
+
+          {person.sudlangan && (
+            <div className="info-card sud-info">
+              <h3 className="card-title">Sud Ma'lumotlari</h3>
+              <div className="info-grid">
+                <div className="info-item">
+                  <label>Sud nomi:</label>
+                  <p>{person.sudNomi}</p>
+                </div>
+                <div className="info-item">
+                  <label>Sud sana:</label>
+                  <p>{person.sudSana}</p>
+                </div>
+                <div className="info-item">
+                  <label>Hukm turi:</label>
+                  <p>{person.hukmTuri}</p>
+                </div>
+                <div className="info-item">
+                  <label>Jazo muddeti:</label>
+                  <p className="jazo-muddeti">{person.jazoMuddeti}</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="info-card">
             <h3 className="card-title">Ro'yxatga Olish Ma'lumotlari</h3>
