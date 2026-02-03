@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import adminService from "../shared/services/adminService";
 import districtService from "../shared/services/districtService";
+import { Shield, User } from "lucide-react";
 import "./AddAdmin.css";
 
 export default function AddAdmin() {
@@ -179,7 +180,7 @@ export default function AddAdmin() {
               className={`role-button ${formData.role === "JQB_ADMIN" ? "active" : ""}`}
               onClick={() => handleRoleChange({ target: { value: "JQB_ADMIN" } })}
             >
-              <div className="role-icon">👮</div>
+              <div className="role-icon"><Shield size={28} /></div>
               <div className="role-name">JQB Admin</div>
               <div className="role-description">Tuman darajasidagi admin</div>
             </button>
@@ -189,7 +190,7 @@ export default function AddAdmin() {
               className={`role-button ${formData.role === "MAHALLA_INSPECTOR" ? "active" : ""}`}
               onClick={() => handleRoleChange({ target: { value: "MAHALLA_INSPECTOR" } })}
             >
-              <div className="role-icon">👤</div>
+              <div className="role-icon"><User size={28} /></div>
               <div className="role-name">Mahalla Inspektori</div>
               <div className="role-description">Mahalla darajasidagi inspektor</div>
             </button>

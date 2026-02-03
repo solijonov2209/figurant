@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../app/provider/AuthProvider";
 import adminService from "../shared/services/adminService";
+import { Pencil, Trash2 } from "lucide-react";
 import "./ManageAdmins.css";
 
 export default function ManageAdmins() {
@@ -173,14 +174,14 @@ export default function ManageAdmins() {
                         onClick={() => handleEditClick(admin)}
                         title="Tahrirlash"
                       >
-                        ✏️
+                        <Pencil size={16} />
                       </button>
                       <button
                         className="delete-button"
                         onClick={() => handleDelete(admin)}
                         title="O'chirish"
                       >
-                        🗑️
+                        <Trash2 size={16} />
                       </button>
                     </div>
                   </td>
