@@ -64,6 +64,7 @@ Mahalla:            ${person.mahallaName}
 
 JINOYAT MA'LUMOTLARI:
 -----------------------------------
+Turkum:             ${person.crimeCategoryName || "Ma'lumot yo'q"}
 Jinoyat turi:       ${person.crimeTypeName || "Ma'lumot yo'q"}
 Qo'shimcha:         ${person.additionalInfo || "Ma'lumot yo'q"}
 
@@ -222,7 +223,11 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
           <div className="info-card">
             <h3 className="card-title">Jinoyat Ma'lumotlari</h3>
             <div className="info-grid">
-              <div className="info-item full-width">
+              <div className="info-item">
+                <label>Turkum:</label>
+                <p>{person.crimeCategoryName || "Ma'lumot yo'q"}</p>
+              </div>
+              <div className="info-item">
                 <label>Jinoyat turi:</label>
                 <p className="crime-type">{person.crimeTypeName || "Ma'lumot yo'q"}</p>
               </div>
