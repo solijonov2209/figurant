@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
+import { Users, AlertTriangle, FileText } from "lucide-react";
 import "./Dashboard.css";
 
 export default function Dashboard() {
@@ -141,7 +142,7 @@ export default function Dashboard() {
       {/* Statistika */}
       <div className="dashboard__stats">
         <div className="stat-card">
-          <div className="stat-icon">👥</div>
+          <div className="stat-icon"><Users size={28} /></div>
           <div className="stat-info">
             <div className="stat-label">Shaxslar:</div>
             <div className="stat-value">{overallStats.total}</div>
@@ -149,7 +150,7 @@ export default function Dashboard() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">⚠️</div>
+          <div className="stat-icon"><AlertTriangle size={28} /></div>
           <div className="stat-info">
             <div className="stat-label">Ishlovdagi shaxslar:</div>
             <div className="stat-value">{overallStats.inProcess}</div>
@@ -159,7 +160,7 @@ export default function Dashboard() {
 
       {/* Hisobot yuklash tugmasi */}
       <button className="dashboard__btn" onClick={() => navigate('/reports')}>
-        📥 Hisobot Yuklash
+        <FileText size={16} /> Hisobot Yuklash
       </button>
 
       {/* Tanlangan tuman statistikasi */}

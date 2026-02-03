@@ -3,6 +3,7 @@ import { useAuth } from "../app/provider/AuthProvider";
 import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
 import reportService from "../shared/services/reportService";
+import { Table, BookOpen, FileText, Download, Pin } from "lucide-react";
 import "./Reports.css";
 
 export default function Reports() {
@@ -178,7 +179,7 @@ export default function Reports() {
               className={`format-button ${format === "csv" ? "active" : ""}`}
               onClick={() => setFormat("csv")}
             >
-              <span className="format-icon">📊</span>
+              <span className="format-icon"><Table size={20} /></span>
               <span className="format-name">CSV</span>
               <span className="format-description">Excel uchun</span>
             </button>
@@ -187,7 +188,7 @@ export default function Reports() {
               className={`format-button ${format === "excel" ? "active" : ""}`}
               onClick={() => setFormat("excel")}
             >
-              <span className="format-icon">📗</span>
+              <span className="format-icon"><BookOpen size={20} /></span>
               <span className="format-name">Excel</span>
               <span className="format-description">.xlsx format</span>
             </button>
@@ -196,7 +197,7 @@ export default function Reports() {
               className={`format-button ${format === "pdf" ? "active" : ""}`}
               onClick={() => setFormat("pdf")}
             >
-              <span className="format-icon">📄</span>
+              <span className="format-icon"><FileText size={20} /></span>
               <span className="format-name">PDF</span>
               <span className="format-description">Chop etish uchun</span>
             </button>
@@ -216,7 +217,7 @@ export default function Reports() {
               </>
             ) : (
               <>
-                <span>📥</span>
+                <Download size={16} />
                 Hisobotni yuklash
               </>
             )}
@@ -224,7 +225,7 @@ export default function Reports() {
         </div>
 
         <div className="info-box">
-          <h4>📌 Eslatma:</h4>
+          <h4><Pin size={16} /> Eslatma:</h4>
           <ul>
             <li>Hisobot tanlangan parametrlarga asosan tayyorlanadi</li>
             <li>CSV va Excel formatlar jadval ko'rinishida bo'ladi</li>

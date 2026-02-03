@@ -5,6 +5,7 @@ import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
 import crimeCategoryService from "../shared/services/crimeCategoryService";
 import crimeTypeService from "../shared/services/crimeTypeService";
+import { Upload, Lock } from "lucide-react";
 import "./AddPerson.css";
 
 export default function AddPerson() {
@@ -250,7 +251,7 @@ export default function AddPerson() {
               style={{ display: "none" }}
             />
             <label htmlFor="photo-upload" className="upload-button">
-              <span>📁</span> Rasm yuklash
+              <Upload size={16} /> Rasm yuklash
             </label>
           </div>
 
@@ -408,7 +409,7 @@ export default function AddPerson() {
             style={{ display: "none" }}
           />
           <label htmlFor="fingerprint-upload" className="fingerprint-button">
-            <span>🔒</span> Barmoq izi
+            <Lock size={16} /> Barmoq izi
           </label>
           {fingerprintFile && <span className="file-name">{fingerprintFile.name}</span>}
         </div>
