@@ -428,3 +428,39 @@
     flex-wrap: wrap;
   }
 }
+
+@media (max-width: 480px) {
+  .add-person-form {
+    padding: 16px;
+  }
+
+  .photo-upload-box {
+    height: 240px;
+  }
+
+  .upload-button {
+    width: 100%;
+  }
+
+  .fingerprint-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .submit-button {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  .sud-modal {
+    width: 95%;
+  }
+
+  .sud-modal-header h3 {
+    font-size: 16px;
+  }
+
+  .sud-modal-body input {
+    padding: 10px 14px;
+  }
+}
