@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import "./Sidebar.css";
-
+import logo from "../../public/logo.png"
 export default function Sidebar() {
   const location = useLocation();
   const { user, logout } = useAuth();
@@ -24,11 +24,11 @@ export default function Sidebar() {
       </button>
 
       <div className="sidebar__logo">
-        <img src="/logo.png" alt="logo" />
-        {!isCollapsed && <span className="logo-text">FIGURANT</span>}
+        {!isCollapsed &&<img src={logo} width='150px' height="150px" alt="logo" /> }
       </div>
 
       <nav className="sidebar__menu">
+      
         <ul>
           <li className={isActive("/") ? "active" : ""}>
             <Link to="/" title="Bosh sahifa">
