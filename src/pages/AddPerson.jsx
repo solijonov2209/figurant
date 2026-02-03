@@ -258,7 +258,7 @@ export default function AddPerson() {
       {success && <div className="success-message">Muvaffaqiyatli qo'shildi!</div>}
 
       <form onSubmit={handleSubmit} className="add-person-form">
-        <div className="form-grid">
+        <div className="person-form-grid">
           {/* Chap tomonda - Rasm yuklash */}
           <div className="photo-section">
             <div className="photo-upload-box">
