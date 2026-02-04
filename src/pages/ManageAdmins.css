@@ -616,6 +616,111 @@
   margin: 0 0 12px 0;
 }
 
+/* Clickable admin card */
+.admin-stat-card {
+  cursor: pointer;
+}
+
+/* Kiritgan count link in table */
+.kiritgan-link {
+  color: #4A90E2;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s;
+}
+
+.kiritgan-link:hover {
+  text-decoration-color: #4A90E2;
+}
+
+/* Persons modal */
+.persons-modal {
+  max-width: 680px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.persons-modal-body {
+  overflow-y: auto;
+  max-height: 60vh;
+  padding: 0 !important;
+}
+
+.persons-modal-empty {
+  text-align: center;
+  color: #999;
+  padding: 40px 24px;
+  font-size: 15px;
+}
+
+.persons-modal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.persons-modal-table thead {
+  background: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.persons-modal-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: #555;
+  border-bottom: 2px solid #dee2e6;
+  white-space: nowrap;
+}
+
+.persons-modal-table td {
+  padding: 11px 16px;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.persons-modal-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.persons-modal-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.persons-modal-status {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge--process {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.status-badge--sud {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-badge--done {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .admins-table {
