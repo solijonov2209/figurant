@@ -23,7 +23,7 @@ class CrimeTypeService {
 
   // Turkum (categoryId) bo'yicha jinoyat turlarini olish
   async getByCategoryId(categoryId) {
-    const filtered = this.crimeTypes.filter(ct => ct.categoryId === categoryId);
+    const filtered = this.crimeTypes.filter(ct => ct.categoryId === parseInt(categoryId));
     return { data: filtered };
   }
 
