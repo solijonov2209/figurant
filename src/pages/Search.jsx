@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
+import crimeCategoryService from "../shared/services/crimeCategoryService";
+import crimeTypeService from "../shared/services/crimeTypeService";
 import { Search as SearchIcon } from "lucide-react";
 import "./Search.css";
 
@@ -16,18 +18,23 @@ export default function Search() {
     passportSerial: "",
     passportNumber: "",
     districtId: "",
-    mahallaId: ""
+    mahallaId: "",
+    crimeCategoryId: "",
+    crimeTypeId: ""
   });
 
   const [persons, setPersons] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [mahallas, setMahallas] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [crimeTypes, setCrimeTypes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
     loadDistricts();
+    loadCategories();
   }, []);
 
   const loadDistricts = async () => {
@@ -48,6 +55,24 @@ export default function Search() {
     }
   };
 
+  const loadCategories = async () => {
+    try {
+      const response = await crimeCategoryService.getAll();
+      setCategories(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const loadCrimeTypes = async (categoryId) => {
+    try {
+      const response = await crimeTypeService.getByCategoryId(categoryId);
+      setCrimeTypes(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleDistrictChange = (e) => {
     const districtId = e.target.value;
     setFilters({ ...filters, districtId, mahallaId: "" });
@@ -55,6 +80,16 @@ export default function Search() {
       loadMahallas(districtId);
     } else {
       setMahallas([]);
+    }
+  };
+
+  const handleCategoryChange = (e) => {
+    const categoryId = e.target.value;
+    setFilters({ ...filters, crimeCategoryId: categoryId, crimeTypeId: "" });
+    if (categoryId) {
+      loadCrimeTypes(categoryId);
+    } else {
+      setCrimeTypes([]);
     }
   };
 
@@ -81,11 +116,14 @@ export default function Search() {
       passportSerial: "",
       passportNumber: "",
       districtId: "",
-      mahallaId: ""
+      mahallaId: "",
+      crimeCategoryId: "",
+      crimeTypeId: ""
     });
     setPersons([]);
     setSearched(false);
     setMahallas([]);
+    setCrimeTypes([]);
     setError("");
   };
 
@@ -169,6 +207,26 @@ export default function Search() {
               ))}
             </select>
           </div>
+
+          <div className="filter-row">
+            <select value={filters.crimeCategoryId} onChange={handleCategoryChange}>
+              <option value="">Barcha turkumlar</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
+            </select>
+
+            <select
+              value={filters.crimeTypeId}
+              onChange={(e) => setFilters({ ...filters, crimeTypeId: e.target.value })}
+              disabled={!filters.crimeCategoryId}
+            >
+              <option value="">Barcha jinoyat turlari</option>
+              {crimeTypes.map(ct => (
+                <option key={ct.id} value={ct.id}>{ct.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="search-actions">
@@ -203,6 +261,7 @@ export default function Search() {
                     <th>Pasport</th>
                     <th>Tuman</th>
                     <th>Mahalla</th>
+                    <th>Jinoyat Turi</th>
                     <th>Ishlovda</th>
                     <th>Amallar</th>
                   </tr>
@@ -220,6 +279,7 @@ export default function Search() {
                       <td>{person.passportSerial} {person.passportNumber}</td>
                       <td>{person.districtName}</td>
                       <td>{person.mahallaName}</td>
+                      <td>{person.crimeTypeName || "-"}</td>
                       <td>
                         {person.inProcess ? (
                           <span className="badge badge-success">Ha</span>

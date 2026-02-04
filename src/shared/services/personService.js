@@ -200,6 +200,14 @@ class PersonService {
       results = results.filter(p => p.mahallaId === parseInt(filters.mahallaId));
     }
 
+    if (filters.crimeCategoryId) {
+      results = results.filter(p => p.crimeCategoryId === parseInt(filters.crimeCategoryId));
+    }
+
+    if (filters.crimeTypeId) {
+      results = results.filter(p => p.crimeTypeId === parseInt(filters.crimeTypeId));
+    }
+
     return { data: results };
   }
 
