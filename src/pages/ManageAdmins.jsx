@@ -3,7 +3,7 @@ import { useAuth } from "../app/provider/AuthProvider";
 import adminService from "../shared/services/adminService";
 import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
-import { Pencil, Trash2, Users, TrendingUp, BarChart2 } from "lucide-react";
+import { Pencil, Trash2, Users, TrendingUp, BarChart2, X } from "lucide-react";
 import "./ManageAdmins.css";
 
 const BAR_COLORS = [
@@ -25,6 +25,7 @@ export default function ManageAdmins() {
   const [selectedAdmin, setSelectedAdmin] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editData, setEditData] = useState({ login: "", password: "" });
+  const [personsModalAdmin, setPersonsModalAdmin] = useState(null);
 
   useEffect(() => {
     loadAdmins();
@@ -105,6 +106,11 @@ export default function ManageAdmins() {
   }, [admins, allPersons, districtFilter, mahallaFilter, user]);
 
   const maxCount = Math.max(...adminStats.map(a => a.personCount), 1);
+
+  const modalPersons = useMemo(() => {
+    if (!personsModalAdmin) return [];
+    return allPersons.filter(p => p.registeredBy === personsModalAdmin.id);
+  }, [personsModalAdmin, allPersons]);
 
   const getRoleName = (role) => {
     switch (role) {
@@ -258,7 +264,7 @@ export default function ManageAdmins() {
         {/* Admin stat cards */}
         <div className="admin-cards-grid">
           {adminStats.map((admin, i) => (
-            <div className="admin-stat-card" key={admin.id}>
+            <div className="admin-stat-card" key={admin.id} onClick={() => setPersonsModalAdmin(admin)} role="button" tabIndex={0}>
               <div className="admin-card-top">
                 <div className="admin-card-avatar" style={{ backgroundColor: BAR_COLORS[i % BAR_COLORS.length] }}>
                   {admin.firstName[0]}{admin.lastName[0]}
@@ -341,7 +347,7 @@ export default function ManageAdmins() {
                     <td>{admin.districtName || "-"}</td>
                     <td>{admin.mahallaName || "-"}</td>
                     <td>{admin.phoneNumber}</td>
-                    <td><strong>{count}</strong></td>
+                    <td><span className="kiritgan-link" onClick={() => setPersonsModalAdmin(admin)}><strong>{count}</strong></span></td>
                     <td>
                       <div className="action-buttons">
                         <button className="edit-button" onClick={() => handleEditClick(admin)} title="Tahrirlash">
@@ -357,6 +363,52 @@ export default function ManageAdmins() {
               })}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Persons Modal */}
+      {personsModalAdmin && (
+        <div className="modal-overlay" onClick={() => setPersonsModalAdmin(null)}>
+          <div className="modal-content persons-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>{personsModalAdmin.lastName} {personsModalAdmin.firstName} — Kiritgan Shaxslar</h3>
+              <button className="close-button" onClick={() => setPersonsModalAdmin(null)}><X size={20} /></button>
+            </div>
+            <div className="modal-body persons-modal-body">
+              {modalPersons.length === 0 ? (
+                <p className="persons-modal-empty">Bu admin hech qon shaxs kiritganmagan</p>
+              ) : (
+                <table className="persons-modal-table">
+                  <thead>
+                    <tr>
+                      <th>№</th>
+                      <th>F.I.O</th>
+                      <th>Tuman</th>
+                      <th>Mahalla</th>
+                      <th>Holat</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {modalPersons.map((person, idx) => (
+                      <tr key={person.id}>
+                        <td>{idx + 1}</td>
+                        <td>{person.lastName} {person.firstName} {person.middleName || ""}</td>
+                        <td>{person.districtName || "-"}</td>
+                        <td>{person.mahallaName || "-"}</td>
+                        <td>
+                          <div className="persons-modal-status">
+                            {person.inProcess && <span className="status-badge status-badge--process">Ishlovda</span>}
+                            {person.sudlangan && <span className="status-badge status-badge--sud">Sudlangan</span>}
+                            {!person.inProcess && !person.sudlangan && <span className="status-badge status-badge--done">Barikhan</span>}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
