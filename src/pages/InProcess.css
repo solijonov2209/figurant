@@ -355,9 +355,46 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .persons-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .in-process-container {
+    padding: 16px;
+  }
+}
+
 @media (max-width: 768px) {
   .persons-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .in-process-container {
+    padding: 12px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .search-section {
+    max-width: 100%;
+  }
+
+  .person-card-header h3 {
+    font-size: 16px;
+  }
+
+  .info-row .label {
+    min-width: 120px;
+    font-size: 13px;
+  }
+
+  .info-row .value {
+    font-size: 13px;
   }
 
   .modal-content {
@@ -367,6 +404,7 @@
 
   .person-card-footer {
     flex-direction: column;
+    gap: 8px;
   }
 
   .modal-footer {
@@ -376,5 +414,77 @@
   .remove-button-large,
   .close-button-large {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .in-process-container {
+    padding: 8px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+  }
+
+  .search-input {
+    padding: 12px 45px 12px 16px;
+    font-size: 14px;
+  }
+
+  .person-card-header {
+    padding: 12px;
+  }
+
+  .person-card-header h3 {
+    font-size: 15px;
+  }
+
+  .person-card-body {
+    padding: 12px;
+  }
+
+  .info-row {
+    font-size: 13px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .info-row .label {
+    min-width: auto;
+    font-size: 12px;
+  }
+
+  .info-row .value {
+    font-size: 13px;
+  }
+
+  .person-card-footer {
+    padding: 12px;
+  }
+
+  .view-details-button,
+  .remove-button {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .modal-header {
+    padding: 16px;
+  }
+
+  .modal-header h2 {
+    font-size: 18px;
+  }
+
+  .modal-body {
+    padding: 16px;
+  }
+
+  .modal-photo img {
+    max-width: 100%;
   }
 }

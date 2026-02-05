@@ -191,6 +191,17 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .profile-container {
+    padding: 16px;
+  }
+
+  .profile-info,
+  .password-section {
+    padding: 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .profile-container {
     padding: 12px;
