@@ -1,3 +1,4 @@
+
 .login-container {
   min-height: 100vh;
   display: flex;
@@ -157,5 +158,106 @@
   .login-button {
     padding: 11px 18px;
     font-size: 14px;
+
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Sahifa */
+.login-page {
+  min-height: 100vh;
+  background: url("../../public/loginbg.jpg") no-repeat center center / cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Qoraytirilgan fon */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+/* Wrapper */
+.login-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Login card */
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  padding: 30px 25px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+/* Logo */
+.logo img {
+  width: 250px;
+  margin-bottom: 25px;
+}
+
+/* Inputlar */
+.login-input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.login-input::placeholder {
+  color: #666;
+}
+
+/* Error */
+.error-text {
+  color: #ffb3b3;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Button */
+.login-button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #ffffff;
+  color: #111;
+  transition: 0.3s;
+}
+
+.login-button:hover {
+  background: #e6e6e6;
+}
+
+/* 📱 Responsive */
+@media (max-width: 480px) {
+  .login-box {
+    padding: 25px 20px;
+  }
+
+  .logo img {
+    width: 70px;
+
   }
 }

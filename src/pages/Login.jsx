@@ -17,7 +17,7 @@ export default function Login() {
     const success = await login(loginValue, passwordValue);
 
     if (!success) {
-      setError("Login yoki parol noto'g'ri");
+      setError("Login yoki parol noto‘g‘ri");
       return;
     }
 
@@ -31,6 +31,7 @@ export default function Login() {
   };
 
   return (
+
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
@@ -70,6 +71,38 @@ export default function Login() {
             Kirish
           </button>
         </form>
+
+    <div className="login-page">
+      <div className="overlay"></div>
+
+      <div className="login-wrapper">
+        <div className="login-box">
+          
+          <div className="logo">
+            <img src="/logo.png" alt="Logo" />
+          </div>
+
+          <input
+            className="login-input"
+            placeholder="Login"
+            value={loginValue}
+            onChange={(e) => setLoginValue(e.target.value)}
+          />
+
+          <input
+            className="login-input"
+            type="password"
+            placeholder="Parol"
+            value={passwordValue}
+            onChange={(e) => setPasswordValue(e.target.value)}
+          />
+
+          {error && <p className="error-text">{error}</p>}
+
+          <button className="login-button" onClick={handleSubmit}>
+            Kirish
+          </button>
+        </div>
       </div>
     </div>
   );
