@@ -67,6 +67,7 @@ JINOYAT MA'LUMOTLARI:
 -----------------------------------
 Turkum:             ${person.crimeCategoryName || "Ma'lumot yo'q"}
 Jinoyat turi:       ${person.crimeTypeName || "Ma'lumot yo'q"}
+Holat:              ${person.holat === "ISHLOV" ? "Ishlov" : person.holat === "TEZKOR_QIZIQUV" ? "Tezkor qiziquv" : "Ma'lumot yo'q"}
 Qo'shimcha:         ${person.additionalInfo || "Ma'lumot yo'q"}
 
 SUD MA'LUMOTLARI:
@@ -241,6 +242,12 @@ Chop etilgan sana: ${new Date().toLocaleString('uz-UZ')}
               <div className="info-item">
                 <label>Jinoyat turi:</label>
                 <p className="crime-type">{person.crimeTypeName || "Ma'lumot yo'q"}</p>
+              </div>
+              <div className="info-item">
+                <label>Holat:</label>
+                <p className="holat-status">
+                  {person.holat === "ISHLOV" ? "Ishlov" : person.holat === "TEZKOR_QIZIQUV" ? "Tezkor qiziquv" : "Ma'lumot yo'q"}
+                </p>
               </div>
               <div className="info-item full-width">
                 <label>Qo'shimcha ma'lumotlar:</label>

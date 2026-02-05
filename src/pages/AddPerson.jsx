@@ -24,6 +24,7 @@ export default function AddPerson() {
     districtId: "",
     mahallaId: "",
     crimeTypeId: "",
+    holat: "",
     additionalInfo: ""
   });
 
@@ -182,6 +183,10 @@ export default function AddPerson() {
 
       if (!formData.crimeTypeId) {
         throw new Error("Jinoyat turini tanlang");
+      }
+
+      if (!formData.holat) {
+        throw new Error("Holatni tanlang");
       }
 
       // Tuman, Mahalla, Turkum va Jinoyat turi nomlarini olish
@@ -412,6 +417,19 @@ export default function AddPerson() {
                 ))}
               </select>
             </div>
+
+            <div className="form-row">
+              <select
+                value={formData.holat}
+                onChange={(e) => setFormData({ ...formData, holat: e.target.value })}
+                required
+              >
+                <option value="">Holat:</option>
+                <option value="ISHLOV">Ishlov</option>
+                <option value="TEZKOR_QIZIQUV">Tezkor qiziquv</option>
+              </select>
+            </div>
+
             <div className="form-row sudlangan-row">
               <label className="sudlangan-label">
                 <input type="checkbox" checked={isSudlangan} onChange={handleSudlaganChange} />
