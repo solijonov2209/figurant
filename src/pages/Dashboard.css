@@ -237,9 +237,24 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .dashboard {
+    gap: 16px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+  }
+
+  .persons-table {
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard {
-    padding: 10px;
+    padding: 12px;
+    gap: 12px;
   }
 
   .dashboard__stats {
@@ -250,17 +265,87 @@
     grid-template-columns: 1fr;
   }
 
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-icon {
+    font-size: 28px;
+  }
+
   .persons-table {
     font-size: 12px;
   }
 
   .persons-table th,
   .persons-table td {
-    padding: 8px 6px;
+    padding: 10px 8px;
   }
 
-  .stat-value {
-    font-size: 24px;
+  .dashboard__btn {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  .district-details h3 {
+    font-size: 18px;
   }
 }
 
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 8px;
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .stat-icon {
+    font-size: 24px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+  }
+
+  .persons-table {
+    font-size: 11px;
+  }
+
+  .persons-table th,
+  .persons-table td {
+    padding: 8px 4px;
+  }
+
+  .dashboard__btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .district-details {
+    padding: 16px;
+  }
+
+  .district-details h3 {
+    font-size: 16px;
+  }
+
+  .district-stat .value {
+    font-size: 20px;
+  }
+
+  .persons-list h4 {
+    font-size: 14px;
+  }
+}

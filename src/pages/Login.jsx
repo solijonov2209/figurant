@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
+import "./Login.css";
 
 export default function Login() {
   const { login } = useAuth();
@@ -10,7 +11,8 @@ export default function Login() {
   const [passwordValue, setPasswordValue] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError("");
     const success = await login(loginValue, passwordValue);
 
@@ -22,28 +24,53 @@ export default function Login() {
     navigate("/");
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
   return (
-    <div style={{ padding: 40 }}>
-      <h2>Kirish</h2>
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <h2 className="login-title">Figurant Tizimi</h2>
+          <p className="login-subtitle">Hisobingizga kiring</p>
+        </div>
 
-      <input
-        placeholder="Login"
-        value={loginValue}
-        onChange={(e) => setLoginValue(e.target.value)}
-      />
-      <br /><br />
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="login">Login</label>
+            <input
+              id="login"
+              type="text"
+              placeholder="Loginni kiriting"
+              value={loginValue}
+              onChange={(e) => setLoginValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              autoFocus
+            />
+          </div>
 
-      <input
-        type="password"
-        placeholder="Parol"
-        value={passwordValue}
-        onChange={(e) => setPasswordValue(e.target.value)}
-      />
-      <br /><br />
+          <div className="form-group">
+            <label htmlFor="password">Parol</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Parolni kiriting"
+              value={passwordValue}
+              onChange={(e) => setPasswordValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+          </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <div className="error-message">{error}</div>}
 
-      <button onClick={handleSubmit}>Kirish</button>
+          <button type="submit" className="login-button">
+            Kirish
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

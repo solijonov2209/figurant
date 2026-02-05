@@ -252,12 +252,136 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .reports-container {
+    padding: 16px;
+  }
+
+  .format-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
+  .reports-container {
+    padding: 12px;
+  }
+
   .format-buttons {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .reports-form {
     padding: 20px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .form-section h3 {
+    font-size: 16px;
+  }
+
+  .radio-option {
+    padding: 12px;
+  }
+
+  .radio-title {
+    font-size: 15px;
+  }
+
+  .format-button {
+    padding: 16px;
+  }
+
+  .format-icon {
+    font-size: 32px;
+  }
+
+  .generate-button {
+    padding: 14px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reports-container {
+    padding: 8px;
+  }
+
+  .reports-form {
+    padding: 16px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .form-section {
+    margin-bottom: 20px;
+  }
+
+  .form-section h3 {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  .radio-option {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .radio-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+  }
+
+  .radio-title {
+    font-size: 14px;
+  }
+
+  .radio-description {
+    font-size: 12px;
+  }
+
+  .district-select {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .format-button {
+    padding: 14px;
+  }
+
+  .format-icon {
+    font-size: 28px;
+  }
+
+  .format-name {
+    font-size: 14px;
+  }
+
+  .format-description {
+    font-size: 11px;
+  }
+
+  .generate-button {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .info-box {
+    padding: 16px;
+    margin-top: 20px;
+  }
+
+  .info-box h4 {
+    font-size: 14px;
+  }
+
+  .info-box li {
+    font-size: 13px;
   }
 }

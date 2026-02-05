@@ -181,17 +181,109 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .add-admin-container {
+    padding: 16px;
+  }
+
+  .add-admin-form {
+    padding: 24px;
+  }
+}
+
 @media (max-width: 768px) {
+  .add-admin-container {
+    padding: 12px;
+  }
+
+  .add-admin-form {
+    padding: 20px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .form-section h3 {
+    font-size: 16px;
+  }
+
   .role-buttons {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .role-button {
+    padding: 20px;
+  }
+
+  .role-icon {
+    font-size: 40px;
   }
 
   .form-actions {
     flex-direction: column;
+    gap: 10px;
   }
 
   .reset-button,
   .submit-button {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-admin-container {
+    padding: 8px;
+  }
+
+  .add-admin-form {
+    padding: 16px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .form-section {
+    margin-bottom: 20px;
+  }
+
+  .form-section h3 {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  .role-button {
+    padding: 16px;
+  }
+
+  .role-icon {
+    font-size: 36px;
+  }
+
+  .role-name {
+    font-size: 14px;
+  }
+
+  .role-description {
+    font-size: 12px;
+  }
+
+  .form-row input,
+  .form-row select {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .reset-button,
+  .submit-button {
+    padding: 12px 32px;
+    font-size: 14px;
+  }
+
+  .form-actions {
+    margin-top: 20px;
+    padding-top: 16px;
   }
 }
