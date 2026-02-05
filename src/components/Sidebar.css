@@ -6,12 +6,29 @@
   height: 100vh;
   overflow: hidden;
   width: 260px;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, transform 0.3s ease;
   position: relative;
 }
 
 .sidebar.collapsed {
   width: 80px;
+}
+
+/* Overlay for mobile */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeInOverlay 0.3s;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Hamburger Toggle Button */
@@ -285,13 +302,18 @@
     left: 0;
     top: 0;
     z-index: 1000;
-    width: 240px;
+    width: 260px;
     transform: translateX(0);
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
   }
 
-  .sidebar.collapsed {
-    width: 70px;
+  .sidebar.mobile.collapsed {
+    transform: translateX(-100%);
+    width: 260px;
+  }
+
+  .sidebar.mobile {
+    width: 260px;
   }
 
   .sidebar__logo img {
@@ -327,12 +349,13 @@
 }
 
 @media (max-width: 480px) {
-  .sidebar {
-    width: 220px;
+  .sidebar.mobile {
+    width: 240px;
   }
 
-  .sidebar.collapsed {
-    width: 65px;
+  .sidebar.mobile.collapsed {
+    transform: translateX(-100%);
+    width: 240px;
   }
 
   .sidebar__toggle {

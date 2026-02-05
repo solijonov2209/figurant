@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
 import {
@@ -11,6 +11,24 @@ export default function Sidebar() {
   const location = useLocation();
   const { user, logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen and auto-collapse sidebar
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsCollapsed(true); // Auto close on mobile
+      }
+    };
+
+    // Initial check
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const isActive = (path) => location.pathname === path;
 
@@ -18,8 +36,27 @@ export default function Sidebar() {
     setIsCollapsed(!isCollapsed);
   };
 
+  const handleMenuClick = () => {
+    // Auto close sidebar on mobile when menu item is clicked
+    if (isMobile) {
+      setIsCollapsed(true);
+    }
+  };
+
+  const handleOverlayClick = () => {
+    if (isMobile && !isCollapsed) {
+      setIsCollapsed(true);
+    }
+  };
+
   return (
-    <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+    <>
+      {/* Overlay for mobile */}
+      {isMobile && !isCollapsed && (
+        <div className="sidebar-overlay" onClick={handleOverlayClick}></div>
+      )}
+
+      <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobile ? 'mobile' : ''}`}>
       {/* Hamburger button */}
       <button className="sidebar__toggle" onClick={toggleSidebar}>
         <span></span>
@@ -35,31 +72,31 @@ export default function Sidebar() {
       
         <ul>
           <li className={isActive("/") ? "active" : ""}>
-            <Link to="/" title="Bosh sahifa">
+            <Link to="/" title="Bosh sahifa" onClick={handleMenuClick}>
               <span className="icon"><Home size={20} /></span>
               {!isCollapsed && <span className="text">Bosh sahifa</span>}
             </Link>
           </li>
           <li className={isActive("/add-person") ? "active" : ""}>
-            <Link to="/add-person" title="Ma'lumot qo'shish">
+            <Link to="/add-person" title="Ma'lumot qo'shish" onClick={handleMenuClick}>
               <span className="icon"><UserPlus size={20} /></span>
               {!isCollapsed && <span className="text">Ma'lumot qo'shish</span>}
             </Link>
           </li>
           <li className={isActive("/in-process") ? "active" : ""}>
-            <Link to="/in-process" title="Ishlovdagi shaxslar">
+            <Link to="/in-process" title="Ishlovdagi shaxslar" onClick={handleMenuClick}>
               <span className="icon"><ClipboardList size={20} /></span>
               {!isCollapsed && <span className="text">Ishlovdagi shaxs ma'lumoti</span>}
             </Link>
           </li>
           <li className={isActive("/search") ? "active" : ""}>
-            <Link to="/search" title="Qidirish">
+            <Link to="/search" title="Qidirish" onClick={handleMenuClick}>
               <span className="icon"><Search size={20} /></span>
               {!isCollapsed && <span className="text">Qidirish</span>}
             </Link>
           </li>
           <li className={isActive("/reports") ? "active" : ""}>
-            <Link to="/reports" title="Hisobot yuklash">
+            <Link to="/reports" title="Hisobot yuklash" onClick={handleMenuClick}>
               <span className="icon"><BarChart2 size={20} /></span>
               {!isCollapsed && <span className="text">Hisobot yuklash</span>}
             </Link>
@@ -72,19 +109,19 @@ export default function Sidebar() {
             <div className="section-divider"></div>
             <ul>
               <li className={isActive("/crime-types") ? "active" : ""}>
-                <Link to="/crime-types" title="Jinoyat turi">
+                <Link to="/crime-types" title="Jinoyat turi" onClick={handleMenuClick}>
                   <span className="icon"><Scale size={20} /></span>
                   {!isCollapsed && <span className="text">Jinoyat turi</span>}
                 </Link>
               </li>
               <li className={isActive("/manage-admins") ? "active" : ""}>
-                <Link to="/manage-admins" title="Adminlarni boshqarish">
+                <Link to="/manage-admins" title="Adminlarni boshqarish" onClick={handleMenuClick}>
                   <span className="icon"><Users size={20} /></span>
                   {!isCollapsed && <span className="text">Adminlar</span>}
                 </Link>
               </li>
               <li className={isActive("/add-admin") ? "active" : ""}>
-                <Link to="/add-admin" title="Inspektor qo'shish">
+                <Link to="/add-admin" title="Inspektor qo'shish" onClick={handleMenuClick}>
                   <span className="icon"><UserCheck size={20} /></span>
                   {!isCollapsed && <span className="text">Inspektor qo'shish</span>}
                 </Link>
@@ -99,7 +136,7 @@ export default function Sidebar() {
         <div className="section-divider"></div>
         <ul>
           <li className={isActive("/profile") ? "active" : ""}>
-            <Link to="/profile" title="Profile">
+            <Link to="/profile" title="Profile" onClick={handleMenuClick}>
               <span className="icon"><User size={20} /></span>
               {!isCollapsed && <span className="text">Profile</span>}
             </Link>
@@ -113,5 +150,6 @@ export default function Sidebar() {
         </ul>
       </div>
     </aside>
+    </>
   );
 }
