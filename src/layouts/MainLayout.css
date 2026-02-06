@@ -24,17 +24,23 @@
   .layout {
     position: relative;
     flex-direction: column;
+    height: auto; /* 100vh emas, auto bo'lsin */
+    min-height: 100vh; /* Kamida 100vh bo'lsin */
+    overflow: visible; /* Scroll qilish uchun */
   }
 
   .layout__content {
     width: 100%;
     flex: 1;
+    overflow: visible;
   }
 
   .layout__page {
     padding: 16px;
     padding-top: 75px; /* Hamburger uchun joy */
     margin-left: 0;
+    overflow-y: visible; /* Auto emas, visible */
+    overflow-x: hidden;
   }
 }
 
