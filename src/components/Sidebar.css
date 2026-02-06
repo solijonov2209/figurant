@@ -53,7 +53,6 @@
 
 .sidebar__toggle:hover {
   background: rgba(255, 255, 255, 0.3);
-  left: 15px;
 }
 
 .sidebar__toggle span {
@@ -85,12 +84,9 @@
   padding-bottom: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
-.sidebar__toggle:hover .sidebar__logo{
-  border-bottom: none;
-}
 
 .sidebar__logo img {
-  width: 450px;
+  width: 150px;
   height: 150px;
 }
 
@@ -307,8 +303,9 @@
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
   }
 
+  /* Mobileda collapsed - faqat 60px ko'rinadi (hamburger uchun) */
   .sidebar.mobile.collapsed {
-    transform: translateX(-100%);
+    transform: translateX(-200px);
     width: 260px;
   }
 
@@ -317,12 +314,8 @@
   }
 
   .sidebar__logo img {
-    width: 45px;
-    height: 45px;
-  }
-
-  .sidebar__logo .logo-text {
-    font-size: 18px;
+    width: 120px;
+    height: 120px;
   }
 
   .sidebar__menu li a {
@@ -354,7 +347,7 @@
   }
 
   .sidebar.mobile.collapsed {
-    transform: translateX(-100%);
+    transform: translateX(-180px);
     width: 240px;
   }
 
@@ -362,7 +355,7 @@
     width: 32px;
     height: 32px;
     top: 15px;
-    right: 12px;
+    left: 12px;
   }
 
   .sidebar__toggle span {
@@ -370,12 +363,8 @@
   }
 
   .sidebar__logo img {
-    width: 40px;
-    height: 40px;
-  }
-
-  .sidebar__logo .logo-text {
-    font-size: 16px;
+    width: 100px;
+    height: 100px;
   }
 
   .sidebar__menu li a {
