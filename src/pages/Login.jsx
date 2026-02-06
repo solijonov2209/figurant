@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../app/provider/AuthProvider";
+
 import "./Login.css";
 
 export default function Login() {
@@ -11,8 +12,7 @@ export default function Login() {
   const [passwordValue, setPasswordValue] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setError("");
     const success = await login(loginValue, passwordValue);
 
@@ -24,54 +24,7 @@ export default function Login() {
     navigate("/");
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSubmit(e);
-    }
-  };
-
   return (
-
-    <div className="login-container">
-      <div className="login-card">
-        <div className="login-header">
-          <h2 className="login-title">Figurant Tizimi</h2>
-          <p className="login-subtitle">Hisobingizga kiring</p>
-        </div>
-
-        <form className="login-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="login">Login</label>
-            <input
-              id="login"
-              type="text"
-              placeholder="Loginni kiriting"
-              value={loginValue}
-              onChange={(e) => setLoginValue(e.target.value)}
-              onKeyPress={handleKeyPress}
-              autoFocus
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Parol</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Parolni kiriting"
-              value={passwordValue}
-              onChange={(e) => setPasswordValue(e.target.value)}
-              onKeyPress={handleKeyPress}
-            />
-          </div>
-
-          {error && <div className="error-message">{error}</div>}
-
-          <button type="submit" className="login-button">
-            Kirish
-          </button>
-        </form>
-
     <div className="login-page">
       <div className="overlay"></div>
 
@@ -104,8 +57,6 @@ export default function Login() {
           </button>
         </div>
       </div>
-    </div>
-    </div>
     </div>
   );
 }
