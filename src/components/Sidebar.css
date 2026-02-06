@@ -314,18 +314,8 @@
   background: rgba(255, 77, 77, 0.3) !important;
 }
 
-/* Responsive Design */
+/* Responsive Design - Mobile & Tablet (iPad) */
 @media (max-width: 1024px) {
-  .sidebar {
-    width: 240px;
-  }
-
-  .sidebar.collapsed {
-    width: 70px;
-  }
-}
-
-@media (max-width: 768px) {
   .sidebar {
     position: fixed;
     left: 0;

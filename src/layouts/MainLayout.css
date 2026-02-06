@@ -19,14 +19,8 @@
   overflow-x: hidden;
 }
 
-/* Responsive Design */
+/* Responsive Design - Tablet & Mobile (iPad va boshqalar) */
 @media (max-width: 1024px) {
-  .layout__page {
-    padding: 16px;
-  }
-}
-
-@media (max-width: 768px) {
   .layout {
     position: relative;
     flex-direction: column;
@@ -38,9 +32,16 @@
   }
 
   .layout__page {
+    padding: 16px;
+    padding-top: 75px; /* Hamburger uchun joy */
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout__page {
     padding: 12px;
     padding-top: 70px; /* Hamburger uchun joy */
-    margin-left: 0;
   }
 }
 
