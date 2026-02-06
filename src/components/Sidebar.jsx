@@ -51,18 +51,29 @@ export default function Sidebar() {
 
   return (
     <>
+      {/* Hamburger button - faqat mobile uchun, fixed position */}
+      {isMobile && (
+        <button className="mobile-hamburger" onClick={toggleSidebar}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      )}
+
       {/* Overlay for mobile */}
       {isMobile && !isCollapsed && (
         <div className="sidebar-overlay" onClick={handleOverlayClick}></div>
       )}
 
       <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobile ? 'mobile' : ''}`}>
-      {/* Hamburger button */}
-      <button className="sidebar__toggle" onClick={toggleSidebar}>
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      {/* Hamburger button - faqat desktop uchun */}
+      {!isMobile && (
+        <button className="sidebar__toggle" onClick={toggleSidebar}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      )}
 
       <div className="sidebar__logo">
         {!isCollapsed &&<img src={logo} width='150px' height="150px" alt="logo" /> }
