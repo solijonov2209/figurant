@@ -13,13 +13,13 @@ export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile screen and auto-collapse sidebar
+  // Detect mobile/tablet screen and auto-collapse sidebar
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth < 768;
+      const mobile = window.innerWidth <= 1024; // iPad va mobilni qamrab oladi
       setIsMobile(mobile);
       if (mobile) {
-        setIsCollapsed(true); // Auto close on mobile
+        setIsCollapsed(true); // Auto close on mobile/tablet
       }
     };
 
