@@ -20,6 +20,8 @@ export default function Sidebar() {
       setIsMobile(mobile);
       if (mobile) {
         setIsCollapsed(true); // Auto close on mobile/tablet
+      } else {
+        setIsCollapsed(false); // Desktop da doim ochiq
       }
     };
 
@@ -66,15 +68,6 @@ export default function Sidebar() {
       )}
 
       <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobile ? 'mobile' : ''}`}>
-      {/* Hamburger button - faqat desktop uchun */}
-      {!isMobile && (
-        <button className="sidebar__toggle" onClick={toggleSidebar}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      )}
-
       <div className="sidebar__logo">
         {!isCollapsed &&<img src={logo} width='150px' height="150px" alt="logo" /> }
       </div>
