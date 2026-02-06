@@ -29,14 +29,17 @@
 @media (max-width: 768px) {
   .layout {
     position: relative;
+    flex-direction: column;
   }
 
   .layout__content {
     width: 100%;
+    flex: 1;
   }
 
   .layout__page {
     padding: 12px;
+    padding-top: 70px; /* Hamburger uchun joy */
     margin-left: 0;
   }
 }
@@ -44,5 +47,6 @@
 @media (max-width: 480px) {
   .layout__page {
     padding: 10px;
+    padding-top: 65px; /* Hamburger uchun joy */
   }
 }

@@ -17,7 +17,7 @@ export default function Login() {
     const success = await login(loginValue, passwordValue);
 
     if (!success) {
-      setError("Login yoki parol noto‘g‘ri");
+      setError("Login yoki parol noto'g'ri");
       return;
     }
 
@@ -30,7 +30,7 @@ export default function Login() {
 
       <div className="login-wrapper">
         <div className="login-box">
-          
+
           <div className="logo">
             <img src="/logo.png" alt="Logo" />
           </div>
