@@ -367,12 +367,20 @@ export default function ManageAdmins() {
                     <td><span className="kiritgan-link" onClick={() => setPersonsModalAdmin(admin)}><strong>{count}</strong></span></td>
                     <td>
                       <div className="action-buttons">
-                        <button className="edit-button" onClick={() => handleEditClick(admin)} title="Tahrirlash">
-                          <Pencil size={16} />
-                        </button>
-                        <button className="delete-button" onClick={() => handleDelete(admin)} title="O'chirish">
-                          <Trash2 size={16} />
-                        </button>
+                        {/* JQB admin faqat o'zi qo'shganlarni tahrirlashi mumkin */}
+                        {(user.role === "SUPER_ADMIN" || admin.createdBy === user.id) && (
+                          <>
+                            <button className="edit-button" onClick={() => handleEditClick(admin)} title="Tahrirlash">
+                              <Pencil size={16} />
+                            </button>
+                            <button className="delete-button" onClick={() => handleDelete(admin)} title="O'chirish">
+                              <Trash2 size={16} />
+                            </button>
+                          </>
+                        )}
+                        {user.role === "JQB_ADMIN" && admin.createdBy !== user.id && (
+                          <span className="no-access-text">-</span>
+                        )}
                       </div>
                     </td>
                   </tr>
