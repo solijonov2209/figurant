@@ -65,11 +65,9 @@ class AdminService {
 
     let inspectors = this.admins.filter(a => a.role === 'MAHALLA_INSPECTOR');
 
-    // JQB admin faqat o'z tumani va o'zi qo'shgan inspektorlarni ko'radi
+    // JQB admin faqat o'z tumanidagi BARCHA inspektorlarni ko'radi
     if (user.role === 'JQB_ADMIN') {
-      inspectors = inspectors.filter(a =>
-        a.districtId === user.districtId && a.createdBy === user.id
-      );
+      inspectors = inspectors.filter(a => a.districtId === user.districtId);
     }
 
     const inspectorsWithoutPasswords = inspectors.map(({ password, ...admin }) => admin);
