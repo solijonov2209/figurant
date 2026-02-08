@@ -65,9 +65,11 @@ class AdminService {
 
     let inspectors = this.admins.filter(a => a.role === 'MAHALLA_INSPECTOR');
 
-    // JQB admin faqat o'z tumanini ko'radi
+    // JQB admin faqat o'z tumani va o'zi qo'shgan inspektorlarni ko'radi
     if (user.role === 'JQB_ADMIN') {
-      inspectors = inspectors.filter(a => a.districtId === user.districtId);
+      inspectors = inspectors.filter(a =>
+        a.districtId === user.districtId && a.createdBy === user.id
+      );
     }
 
     const inspectorsWithoutPasswords = inspectors.map(({ password, ...admin }) => admin);
@@ -75,12 +77,23 @@ class AdminService {
     return { data: inspectorsWithoutPasswords };
   }
 
-  // Admin qo'shish (faqat Super Admin)
+  // Admin qo'shish (Super Admin va JQB Admin)
   async create(adminData, user) {
     // Keyinchalik API: return axios.post('/admins', { ...adminData, createdBy: user.id })
 
-    if (user.role !== 'SUPER_ADMIN') {
+    // Ruxsat tekshiruvi
+    if (user.role === 'MAHALLA_INSPECTOR') {
       throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+    }
+
+    // JQB Admin faqat o'z tumaniga mahalla inspektor qo'sha oladi
+    if (user.role === 'JQB_ADMIN') {
+      if (adminData.role !== 'MAHALLA_INSPECTOR') {
+        throw new Error('Siz faqat mahalla inspektori qo\'sha olasiz');
+      }
+      if (parseInt(adminData.districtId) !== user.districtId) {
+        throw new Error('Siz faqat o\'z tumaningizga inspektor qo\'sha olasiz');
+      }
     }
 
     // Login mavjudligini tekshirish
@@ -92,6 +105,7 @@ class AdminService {
     const newAdmin = {
       id: Math.max(...this.admins.map(a => a.id), 0) + 1,
       ...adminData,
+      createdBy: user.id, // Kim qo'shganini saqlash
       createdAt: new Date().toISOString()
     };
 
