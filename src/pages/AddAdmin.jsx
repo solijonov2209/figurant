@@ -10,9 +10,9 @@ export default function AddAdmin() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Agar Super Admin bo'lmasa, dashboard ga qaytarish
+  // Agar Super Admin yoki JQB Admin bo'lmasa, dashboard ga qaytarish
   useEffect(() => {
-    if (user?.role !== "SUPER_ADMIN") {
+    if (user?.role !== "SUPER_ADMIN" && user?.role !== "JQB_ADMIN") {
       navigate("/");
     }
   }, [user, navigate]);
@@ -23,8 +23,8 @@ export default function AddAdmin() {
     firstName: "",
     lastName: "",
     phoneNumber: "",
-    role: "JQB_ADMIN",
-    districtId: "",
+    role: user?.role === "JQB_ADMIN" ? "MAHALLA_INSPECTOR" : "JQB_ADMIN",
+    districtId: user?.role === "JQB_ADMIN" ? user.districtId : "",
     mahallaId: ""
   });
 
@@ -36,7 +36,11 @@ export default function AddAdmin() {
 
   useEffect(() => {
     loadDistricts();
-  }, []);
+    // JQB Admin uchun avtomatik mahallalarni yuklash
+    if (user?.role === "JQB_ADMIN" && user?.districtId) {
+      loadMahallas(user.districtId);
+    }
+  }, [user]);
 
   const loadDistricts = async () => {
     try {
@@ -160,42 +164,51 @@ export default function AddAdmin() {
     setSuccess(false);
   };
 
-  if (user?.role !== "SUPER_ADMIN") {
+  if (user?.role !== "SUPER_ADMIN" && user?.role !== "JQB_ADMIN") {
     return null;
   }
 
+  const isJQBAdmin = user?.role === "JQB_ADMIN";
+  const pageTitle = isJQBAdmin ? "Mahalla inspektori qo'shish" : "Admin qo'shish";
+  const submitButtonText = isJQBAdmin ? "Inspektor qo'shish" : "Admin qo'shish";
+
   return (
     <div className="add-admin-container">
-      <h2 className="page-title">Admin qo'shish</h2>
+      <h2 className="page-title">{pageTitle}</h2>
 
       {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">Admin muvaffaqiyatli qo'shildi!</div>}
+      {success && <div className="success-message">
+        {isJQBAdmin ? "Inspektor muvaffaqiyatli qo'shildi!" : "Admin muvaffaqiyatli qo'shildi!"}
+      </div>}
 
       <form onSubmit={handleSubmit} className="add-admin-form">
-        <div className="form-section">
-          <h3>Rol tanlash</h3>
-          <div className="role-buttons">
-            <button
-              type="button"
-              className={`role-button ${formData.role === "JQB_ADMIN" ? "active" : ""}`}
-              onClick={() => handleRoleChange({ target: { value: "JQB_ADMIN" } })}
-            >
-              <div className="role-icon"><Shield size={28} /></div>
-              <div className="role-name">JQB Admin</div>
-              <div className="role-description">Tuman darajasidagi admin</div>
-            </button>
+        {/* Faqat Super Admin rol tanlaydi */}
+        {user?.role === "SUPER_ADMIN" && (
+          <div className="form-section">
+            <h3>Rol tanlash</h3>
+            <div className="role-buttons">
+              <button
+                type="button"
+                className={`role-button ${formData.role === "JQB_ADMIN" ? "active" : ""}`}
+                onClick={() => handleRoleChange({ target: { value: "JQB_ADMIN" } })}
+              >
+                <div className="role-icon"><Shield size={28} /></div>
+                <div className="role-name">JQB Admin</div>
+                <div className="role-description">Tuman darajasidagi admin</div>
+              </button>
 
-            <button
-              type="button"
-              className={`role-button ${formData.role === "MAHALLA_INSPECTOR" ? "active" : ""}`}
-              onClick={() => handleRoleChange({ target: { value: "MAHALLA_INSPECTOR" } })}
-            >
-              <div className="role-icon"><User size={28} /></div>
-              <div className="role-name">Mahalla Inspektori</div>
-              <div className="role-description">Mahalla darajasidagi inspektor</div>
-            </button>
+              <button
+                type="button"
+                className={`role-button ${formData.role === "MAHALLA_INSPECTOR" ? "active" : ""}`}
+                onClick={() => handleRoleChange({ target: { value: "MAHALLA_INSPECTOR" } })}
+              >
+                <div className="role-icon"><User size={28} /></div>
+                <div className="role-name">Mahalla Inspektori</div>
+                <div className="role-description">Mahalla darajasidagi inspektor</div>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="form-grid">
           <div className="form-section">
@@ -261,6 +274,7 @@ export default function AddAdmin() {
                 value={formData.districtId}
                 onChange={handleDistrictChange}
                 required
+                disabled={isJQBAdmin}
               >
                 <option value="">Tumanni tanlang</option>
                 {districts.map(district => (
@@ -271,7 +285,7 @@ export default function AddAdmin() {
               </select>
             </div>
 
-            {formData.role === "MAHALLA_INSPECTOR" && (
+            {(formData.role === "MAHALLA_INSPECTOR" || isJQBAdmin) && (
               <div className="form-row">
                 <select
                   value={formData.mahallaId}
@@ -296,7 +310,7 @@ export default function AddAdmin() {
             Tozalash
           </button>
           <button type="submit" className="submit-button" disabled={loading}>
-            {loading ? "Saqlanmoqda..." : "Admin qo'shish"}
+            {loading ? "Saqlanmoqda..." : submitButtonText}
           </button>
         </div>
       </form>

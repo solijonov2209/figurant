@@ -36,7 +36,16 @@ export default function ManageAdmins() {
   const loadAdmins = async () => {
     try {
       setLoading(true);
-      const response = await adminService.getAll();
+      let response;
+
+      // JQB Admin faqat o'zi qo'shgan mahalla inspektorlarni ko'radi
+      if (user.role === "JQB_ADMIN") {
+        response = await adminService.getMahallaInspectors(user);
+      } else {
+        // Super Admin barcha adminlarni ko'radi
+        response = await adminService.getAll();
+      }
+
       const filteredAdmins = response.data.filter(admin => admin.id !== user.id);
       setAdmins(filteredAdmins);
     } catch (err) {
@@ -94,7 +103,9 @@ export default function ManageAdmins() {
       filtered = filtered.filter(p => p.mahallaId === parseInt(mahallaFilter));
     }
 
-    const allAdminsList = [user, ...admins];
+    // JQB Admin uchun faqat inspektorlar, o'zi yo'q
+    // Super Admin uchun o'zi va boshqa adminlar
+    const allAdminsList = user.role === "JQB_ADMIN" ? admins : [user, ...admins];
 
     return allAdminsList
       .map(admin => ({
@@ -179,11 +190,17 @@ export default function ManageAdmins() {
     );
   }
 
+  const isJQBAdmin = user.role === "JQB_ADMIN";
+  const pageTitle = isJQBAdmin ? "Mahalla Inspektorlari" : "Adminlarni Boshqarish";
+  const pageTotalText = isJQBAdmin
+    ? `Jami inspektorlar: ${admins.length}`
+    : `Jami adminlar: ${admins.length + 1}`;
+
   return (
     <div className="manage-admins-container">
       <div className="page-header">
-        <h2 className="page-title">Adminlarni Boshqarish</h2>
-        <p className="page-subtitle">Jami adminlar: {admins.length + 1}</p>
+        <h2 className="page-title">{pageTitle}</h2>
+        <p className="page-subtitle">{pageTotalText}</p>
       </div>
 
       {error && <div className="error-message">{error}</div>}
@@ -196,8 +213,8 @@ export default function ManageAdmins() {
           <div className="summary-card">
             <div className="summary-icon summary-icon--blue"><Users size={22} /></div>
             <div className="summary-text">
-              <span className="summary-number">{admins.length + 1}</span>
-              <span className="summary-label">Jami Adminlar</span>
+              <span className="summary-number">{isJQBAdmin ? admins.length : admins.length + 1}</span>
+              <span className="summary-label">{isJQBAdmin ? "Jami Inspektorlar" : "Jami Adminlar"}</span>
             </div>
           </div>
           <div className="summary-card">
@@ -312,9 +329,9 @@ export default function ManageAdmins() {
       </div>
 
       {/* ===== ADMIN RO'YXAT JADVALI ===== */}
-      <h3 className="section-title">Admin Ro'yxati</h3>
+      <h3 className="section-title">{isJQBAdmin ? "Inspektor Ro'yxati" : "Admin Ro'yxati"}</h3>
       {admins.length === 0 ? (
-        <div className="empty-text">Hozircha boshqa adminlar yo'q</div>
+        <div className="empty-text">{isJQBAdmin ? "Hozircha inspektorlar yo'q" : "Hozircha boshqa adminlar yo'q"}</div>
       ) : (
         <div className="admins-list">
           <table className="admins-table">
