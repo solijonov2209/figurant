@@ -13,6 +13,13 @@ export default function InProcess() {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Mahalla inspektor bu sahifaga kira olmaydi
+  useEffect(() => {
+    if (user?.role === "MAHALLA_INSPECTOR") {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   useEffect(() => {
     loadPersons();
   }, []);

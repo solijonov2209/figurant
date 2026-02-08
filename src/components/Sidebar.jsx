@@ -87,12 +87,15 @@ export default function Sidebar() {
               {!isCollapsed && <span className="text">Ma'lumot qo'shish</span>}
             </Link>
           </li>
-          <li className={isActive("/in-process") ? "active" : ""}>
-            <Link to="/in-process" title="Ishlovdagi shaxslar" onClick={handleMenuClick}>
-              <span className="icon"><ClipboardList size={20} /></span>
-              {!isCollapsed && <span className="text">Ishlovdagi shaxs ma'lumoti</span>}
-            </Link>
-          </li>
+          {/* Mahalla inspektor "Ishlovdagi shaxslar" ko'rmaydi */}
+          {user?.role !== "MAHALLA_INSPECTOR" && (
+            <li className={isActive("/in-process") ? "active" : ""}>
+              <Link to="/in-process" title="Ishlovdagi shaxslar" onClick={handleMenuClick}>
+                <span className="icon"><ClipboardList size={20} /></span>
+                {!isCollapsed && <span className="text">Ishlovdagi shaxs ma'lumoti</span>}
+              </Link>
+            </li>
+          )}
           <li className={isActive("/search") ? "active" : ""}>
             <Link to="/search" title="Qidirish" onClick={handleMenuClick}>
               <span className="icon"><Search size={20} /></span>
