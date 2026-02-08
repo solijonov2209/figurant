@@ -24,11 +24,19 @@ export default function Dashboard() {
     try {
       setLoading(true);
 
-      // Barcha shaxslarni yuklash
+      // Barcha shaxslarni yuklash (mahalla inspektor uchun faqat o'zniki)
       const personsResponse = await personService.getAll(user);
       setAllPersons(personsResponse.data);
 
-      // Umumiy statistika
+      // Mahalla inspektor uchun sodda statistika
+      if (user.role === "MAHALLA_INSPECTOR") {
+        const total = personsResponse.data.length;
+        const inProcess = personsResponse.data.filter(p => p.inProcess).length;
+        setOverallStats({ total, inProcess });
+        return; // Xarita va tuman statistikasiga hojat yo'q
+      }
+
+      // Super Admin va JQB Admin uchun umumiy statistika
       const statsResponse = await personService.getOverallStats();
       setOverallStats(statsResponse.data);
 
