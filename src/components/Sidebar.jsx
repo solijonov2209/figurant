@@ -133,6 +133,27 @@ export default function Sidebar() {
             </ul>
           </div>
         )}
+
+        {/* Faqat JQB Admin uchun */}
+        {user?.role === "JQB_ADMIN" && (
+          <div className="admin-section">
+            <div className="section-divider"></div>
+            <ul>
+              <li className={isActive("/manage-admins") ? "active" : ""}>
+                <Link to="/manage-admins" title="Inspektorlar" onClick={handleMenuClick}>
+                  <span className="icon"><Users size={20} /></span>
+                  {!isCollapsed && <span className="text">Inspektorlar</span>}
+                </Link>
+              </li>
+              <li className={isActive("/add-admin") ? "active" : ""}>
+                <Link to="/add-admin" title="Inspektor qo'shish" onClick={handleMenuClick}>
+                  <span className="icon"><UserCheck size={20} /></span>
+                  {!isCollapsed && <span className="text">Inspektor qo'shish</span>}
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
       </nav>
 
       {/* Profile va Logout */}
