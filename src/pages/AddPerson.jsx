@@ -29,6 +29,11 @@ export default function AddPerson() {
     additionalInfo: ""
   });
 
+  // Tug'ilgan sana uchun alohida state
+  const [birthDay, setBirthDay] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+
   const [photoFile, setPhotoFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
   const [fingerprintFile, setFingerprintFile] = useState(null);
@@ -170,8 +175,19 @@ export default function AddPerson() {
         throw new Error("Ism, Familiya va Otasining ismi majburiy");
       }
 
-      if (!formData.birthDate) {
-        throw new Error("Tug'ilgan sana majburiy");
+      if (!birthDay || !birthMonth || !birthYear) {
+        throw new Error("Tug'ilgan sana majburiy (Kun, Oy, Yil)");
+      }
+
+      // Tug'ilgan sanani formatlash (YYYY-MM-DD)
+      const formattedDay = birthDay.toString().padStart(2, '0');
+      const formattedMonth = birthMonth.toString().padStart(2, '0');
+      const birthDate = `${birthYear}-${formattedMonth}-${formattedDay}`;
+
+      // Validatsiya: sanani tekshirish
+      const dateObj = new Date(birthDate);
+      if (isNaN(dateObj.getTime())) {
+        throw new Error("Noto'g'ri sana kiritildi");
       }
 
       if (!formData.passportSerial || !formData.passportNumber) {
@@ -199,6 +215,7 @@ export default function AddPerson() {
       // Ma'lumotni saqlash
       const personData = {
         ...formData,
+        birthDate: birthDate, // Formatlangan sana
         districtId: parseInt(formData.districtId),
         districtName: district.name,
         mahallaId: parseInt(formData.mahallaId),
@@ -246,6 +263,9 @@ export default function AddPerson() {
       holat: "",
       additionalInfo: ""
     });
+    setBirthDay("");
+    setBirthMonth("");
+    setBirthYear("");
     setSelectedCategoryId("");
     setFilteredCrimeTypes([]);
     setPhotoFile(null);
@@ -353,13 +373,51 @@ export default function AddPerson() {
               />
             </div>
 
-            <div className="form-row">
+            <div className="form-row birth-date-row">
               <input
-                type="date"
-                placeholder="Tug'ilgan sana:"
-                value={formData.birthDate}
-                onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
+                type="number"
+                placeholder="Kun"
+                value={birthDay}
+                onChange={(e) => {
+                  const day = e.target.value;
+                  if (day === "" || (parseInt(day) >= 1 && parseInt(day) <= 31)) {
+                    setBirthDay(day);
+                  }
+                }}
+                min="1"
+                max="31"
                 required
+                className="birth-day"
+              />
+              <input
+                type="number"
+                placeholder="Oy"
+                value={birthMonth}
+                onChange={(e) => {
+                  const month = e.target.value;
+                  if (month === "" || (parseInt(month) >= 1 && parseInt(month) <= 12)) {
+                    setBirthMonth(month);
+                  }
+                }}
+                min="1"
+                max="12"
+                required
+                className="birth-month"
+              />
+              <input
+                type="number"
+                placeholder="Yil"
+                value={birthYear}
+                onChange={(e) => {
+                  const year = e.target.value;
+                  if (year === "" || (parseInt(year) >= 1900 && parseInt(year) <= new Date().getFullYear())) {
+                    setBirthYear(year);
+                  }
+                }}
+                min="1900"
+                max={new Date().getFullYear()}
+                required
+                className="birth-year"
               />
             </div>
 
