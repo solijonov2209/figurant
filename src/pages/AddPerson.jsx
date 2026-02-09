@@ -20,6 +20,7 @@ export default function AddPerson() {
     birthDate: "",
     passportSerial: "",
     passportNumber: "",
+    address: "",
     carInfo: "",
     districtId: "",
     mahallaId: "",
@@ -237,10 +238,12 @@ export default function AddPerson() {
       birthDate: "",
       passportSerial: "",
       passportNumber: "",
+      address: "",
       carInfo: "",
       districtId: user.role === "JQB_ADMIN" ? user.districtId : "",
       mahallaId: user.role === "MAHALLA_INSPECTOR" ? user.mahallaId : "",
       crimeTypeId: "",
+      holat: "",
       additionalInfo: ""
     });
     setSelectedCategoryId("");
@@ -378,6 +381,15 @@ export default function AddPerson() {
                 maxLength="7"
                 required
                 className="passport-number"
+              />
+            </div>
+
+            <div className="form-row">
+              <input
+                type="text"
+                placeholder="Manzil (yashash manzili va uy raqami):"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               />
             </div>
 
