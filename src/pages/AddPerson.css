@@ -188,6 +188,18 @@
   gap: 15px;
 }
 
+.birth-date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr;
+  gap: 15px;
+}
+
+.birth-day,
+.birth-month,
+.birth-year {
+  text-align: center;
+}
+
 .dropdown-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -488,6 +500,7 @@
   }
 
   .passport-row,
+  .birth-date-row,
   .dropdown-row {
     grid-template-columns: 1fr;
   }
