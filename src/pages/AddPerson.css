@@ -63,17 +63,55 @@
   justify-content: center;
   background-color: #f9f9f9;
   overflow: hidden;
+  position: relative;
 }
 
 .photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   text-align: center;
   color: #999;
+}
+
+.photo-placeholder svg {
+  color: #ccc;
 }
 
 .photo-preview {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.remove-photo-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 77, 77, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.remove-photo-button:hover {
+  background-color: rgba(255, 0, 0, 1);
+  transform: scale(1.1);
+}
+
+.photo-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .upload-button {
@@ -88,11 +126,30 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  border: none;
 }
 
 .upload-button:hover {
   background-color: #357ABD;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.upload-button--camera {
+  background-color: #50C878;
+}
+
+.upload-button--camera:hover {
+  background-color: #45B368;
+}
+
+.upload-button--gallery {
+  background-color: #6C63FF;
+}
+
+.upload-button--gallery:hover {
+  background-color: #5A52E5;
 }
 
 /* Form fields */
@@ -419,6 +476,17 @@
     top: 0;
   }
 
+  .photo-buttons {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .upload-button {
+    flex: 1;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
   .passport-row,
   .dropdown-row {
     grid-template-columns: 1fr;
@@ -435,11 +503,23 @@
   }
 
   .photo-upload-box {
-    height: 240px;
+    height: 280px;
+  }
+
+  .photo-buttons {
+    flex-direction: column;
+    gap: 8px;
   }
 
   .upload-button {
     width: 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .remove-photo-button {
+    width: 28px;
+    height: 28px;
   }
 
   .fingerprint-button {
