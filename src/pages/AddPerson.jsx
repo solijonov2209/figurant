@@ -5,7 +5,7 @@ import personService from "../shared/services/personService";
 import districtService from "../shared/services/districtService";
 import crimeCategoryService from "../shared/services/crimeCategoryService";
 import crimeTypeService from "../shared/services/crimeTypeService";
-import { Upload, Lock, Scale, X } from "lucide-react";
+import { Upload, Lock, Scale, X, Camera } from "lucide-react";
 import "./AddPerson.css";
 
 export default function AddPerson() {
@@ -268,13 +268,38 @@ export default function AddPerson() {
           <div className="photo-section">
             <div className="photo-upload-box">
               {photoPreview ? (
-                <img src={photoPreview} alt="Preview" className="photo-preview" />
+                <>
+                  <img src={photoPreview} alt="Preview" className="photo-preview" />
+                  <button
+                    type="button"
+                    className="remove-photo-button"
+                    onClick={() => {
+                      setPhotoFile(null);
+                      setPhotoPreview(null);
+                    }}
+                  >
+                    <X size={16} />
+                  </button>
+                </>
               ) : (
                 <div className="photo-placeholder">
+                  <Camera size={48} />
                   <p>Rasm yuklash</p>
                 </div>
               )}
             </div>
+
+            {/* Kameradan rasm olish (mobil qurilmalar uchun) */}
+            <input
+              type="file"
+              id="photo-camera"
+              accept="image/*"
+              capture="environment"
+              onChange={handlePhotoChange}
+              style={{ display: "none" }}
+            />
+
+            {/* Galereya/fayldan rasm yuklash */}
             <input
               type="file"
               id="photo-upload"
@@ -282,9 +307,15 @@ export default function AddPerson() {
               onChange={handlePhotoChange}
               style={{ display: "none" }}
             />
-            <label htmlFor="photo-upload" className="upload-button">
-              <Upload size={16} /> Rasm yuklash
-            </label>
+
+            <div className="photo-buttons">
+              <label htmlFor="photo-camera" className="upload-button upload-button--camera">
+                <Camera size={16} /> Kameradan olish
+              </label>
+              <label htmlFor="photo-upload" className="upload-button upload-button--gallery">
+                <Upload size={16} /> Galereya
+              </label>
+            </div>
           </div>
 
           {/* O'ng tomonda - Forma maydonlari */}
