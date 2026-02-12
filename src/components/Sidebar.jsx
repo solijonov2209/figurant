@@ -92,7 +92,7 @@ export default function Sidebar() {
             <li className={isActive("/in-process") ? "active" : ""}>
               <Link to="/in-process" title="Ishlovdagi shaxslar" onClick={handleMenuClick}>
                 <span className="icon"><ClipboardList size={20} /></span>
-                {!isCollapsed && <span className="text">Ishlovdagi shaxs ma'lumoti</span>}
+                {!isCollapsed && <span className="text">Ishlovdagi shaxslar</span>}
               </Link>
             </li>
           )}
