@@ -30,12 +30,12 @@ class PersonService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.PERSONS.BASE, {
-        params: { userId: user.id }
-      });
-      return { data: response.data };
+      const response = await axiosInstance.get(API_ENDPOINTS.OFFENDERS.BASE);
+      // Pagination bo'lsa, results ni olish
+      const data = response.data.results || response.data;
+      return { data: Array.isArray(data) ? data : [] };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Shaxslarni yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Shaxslarni yuklashda xatolik');
     }
   }
 
@@ -54,12 +54,14 @@ class PersonService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.PERSONS.IN_PROCESS, {
-        params: { userId: user.id }
+      const response = await axiosInstance.get(API_ENDPOINTS.OFFENDERS.BASE, {
+        params: { in_process: true }
       });
-      return { data: response.data };
+      const data = response.data.results || response.data;
+      const inProcessPersons = Array.isArray(data) ? data.filter(p => p.in_process || p.inProcess) : [];
+      return { data: inProcessPersons };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Ishlovdagi shaxslarni yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Ishlovdagi shaxslarni yuklashda xatolik');
     }
   }
 
@@ -88,13 +90,17 @@ class PersonService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.post(API_ENDPOINTS.PERSONS.BASE, {
+      const response = await axiosInstance.post(API_ENDPOINTS.OFFENDERS.BASE, {
         ...personData,
-        userId: user.id
+        registered_by: user.id
       });
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Shaxs qo\'shishda xatolik');
+      const errorMsg = error.response?.data?.message
+        || error.response?.data?.detail
+        || JSON.stringify(error.response?.data)
+        || 'Shaxs qo\'shishda xatolik';
+      throw new Error(errorMsg);
     }
   }
 
@@ -127,15 +133,19 @@ class PersonService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.put(
-        API_ENDPOINTS.PERSONS.BY_ID(id),
+        API_ENDPOINTS.OFFENDERS.BY_ID(id),
         {
           ...personData,
-          userId: user.id
+          updated_by: user.id
         }
       );
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Shaxsni tahrirlashda xatolik');
+      const errorMsg = error.response?.data?.message
+        || error.response?.data?.detail
+        || JSON.stringify(error.response?.data)
+        || 'Shaxsni tahrirlashda xatolik';
+      throw new Error(errorMsg);
     }
   }
 
@@ -174,12 +184,12 @@ class PersonService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.post(
-        API_ENDPOINTS.PERSONS.ADD_TO_PROCESS(personId),
-        { userId: user.id }
+        API_ENDPOINTS.OFFENDERS.ADD_TO_PROCESS(personId),
+        { user_id: user.id }
       );
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Ishlovga qo\'shishda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Ishlovga qo\'shishda xatolik');
     }
   }
 
@@ -212,12 +222,12 @@ class PersonService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.post(
-        API_ENDPOINTS.PERSONS.REMOVE_FROM_PROCESS(personId),
-        { userId: user.id }
+        API_ENDPOINTS.OFFENDERS.REMOVE_FROM_PROCESS(personId),
+        { user_id: user.id }
       );
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Ishlovdan chiqarishda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Ishlovdan chiqarishda xatolik');
     }
   }
 
@@ -281,12 +291,28 @@ class PersonService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.PERSONS.SEARCH, {
-        params: { ...filters, userId: user.id }
-      });
-      return { data: response.data };
+      // Swagger da search endpoint parametrlari:
+      // first_name, last_name, passport, district, quarter, crime_category, crime
+      const params = {
+        first_name: filters.firstName,
+        last_name: filters.lastName,
+        passport: filters.passportSerial && filters.passportNumber
+          ? `${filters.passportSerial}${filters.passportNumber}`
+          : undefined,
+        district: filters.districtId,
+        quarter: filters.mahallaId,
+        crime_category: filters.crimeCategoryId,
+        crime: filters.crimeTypeId
+      };
+
+      // Undefined qiymatlarni o'chirish
+      Object.keys(params).forEach(key => params[key] === undefined && delete params[key]);
+
+      const response = await axiosInstance.get(API_ENDPOINTS.OFFENDERS.SEARCH, { params });
+      const data = response.data.results || response.data;
+      return { data: Array.isArray(data) ? data : [] };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Qidirishda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Qidirishda xatolik');
     }
   }
 
@@ -304,10 +330,10 @@ class PersonService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.PERSONS.BY_ID(id));
+      const response = await axiosInstance.get(API_ENDPOINTS.OFFENDERS.BY_ID(id));
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Shaxsni yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Shaxsni yuklashda xatolik');
     }
   }
 
@@ -327,13 +353,23 @@ class PersonService {
     }
 
     // Real API bilan ishlash
+    // API da tuman bo'yicha statistika yo'q, barcha offenders ni olish
     try {
-      const response = await axiosInstance.get(
-        API_ENDPOINTS.PERSONS.STATS_BY_DISTRICT(districtId)
-      );
-      return { data: response.data };
+      const response = await axiosInstance.get(API_ENDPOINTS.OFFENDERS.BASE, {
+        params: { district: districtId }
+      });
+      const data = response.data.results || response.data;
+      const districtPersons = Array.isArray(data) ? data : [];
+      const inProcessPersons = districtPersons.filter(p => p.in_process || p.inProcess);
+
+      return {
+        data: {
+          total: districtPersons.length,
+          inProcess: inProcessPersons.length
+        }
+      };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Statistikani yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Statistikani yuklashda xatolik');
     }
   }
 
@@ -351,10 +387,26 @@ class PersonService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.PERSONS.STATS);
+      // Statistika endpoint dan olish
+      const response = await axiosInstance.get(API_ENDPOINTS.USERS.STATISTICS.ADMIN_AND_OFFENDERS_COUNT);
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Statistikani yuklashda xatolik');
+      // Agar statistika endpoint ishlamasa, barcha offenders ni olish
+      try {
+        const response = await axiosInstance.get(API_ENDPOINTS.OFFENDERS.BASE);
+        const data = response.data.results || response.data;
+        const persons = Array.isArray(data) ? data : [];
+        const inProcessCount = persons.filter(p => p.in_process || p.inProcess).length;
+
+        return {
+          data: {
+            total: persons.length,
+            inProcess: inProcessCount
+          }
+        };
+      } catch (err) {
+        throw new Error(err.response?.data?.message || err.response?.data?.detail || 'Statistikani yuklashda xatolik');
+      }
     }
   }
 }

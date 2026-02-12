@@ -41,7 +41,12 @@ class AuthService {
         password
       });
 
+      // Response strukturasi: { token: "...", user: {...} }
       const { token, user } = response.data;
+
+      if (!token || !user) {
+        throw new Error("Noto'g'ri response strukturasi");
+      }
 
       setAuthToken(token);
       localStorage.setItem('user', JSON.stringify(user));
@@ -50,32 +55,17 @@ class AuthService {
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.message || "Login yoki parol noto'g'ri"
+        error: error.response?.data?.message || error.response?.data?.detail || "Login yoki parol noto'g'ri"
       };
     }
   }
 
   // Logout
   async logout() {
-    if (USE_MOCK_DATA) {
-      // Mock data bilan ishlash
-      clearAuthToken();
-      localStorage.removeItem('user');
-      return { success: true };
-    }
-
-    // Real API bilan ishlash
-    try {
-      await axiosInstance.post(API_ENDPOINTS.AUTH.LOGOUT);
-      clearAuthToken();
-      localStorage.removeItem('user');
-      return { success: true };
-    } catch (error) {
-      // Logout xatosi bo'lsa ham local ma'lumotlarni o'chirish
-      clearAuthToken();
-      localStorage.removeItem('user');
-      return { success: true };
-    }
+    // API da logout endpoint yo'q, shunchaki tokenni o'chiramiz
+    clearAuthToken();
+    localStorage.removeItem('user');
+    return { success: true };
   }
 
   // Foydalanuvchi ma'lumotlarini tekshirish
@@ -89,10 +79,14 @@ class AuthService {
       return { success: false };
     }
 
-    // Real API bilan ishlash
+    // Real API bilan ishlash - /users/profile/ endpoint
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.AUTH.ME);
-      const user = response.data;
+      const response = await axiosInstance.get(API_ENDPOINTS.AUTH.PROFILE);
+
+      // Response array bo'lsa, birinchi elementni olish
+      const user = Array.isArray(response.data) && response.data.length > 0
+        ? response.data[0]
+        : response.data;
 
       localStorage.setItem('user', JSON.stringify(user));
       return { success: true, data: user };

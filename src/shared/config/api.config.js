@@ -58,59 +58,46 @@ export { axiosInstance };
 export const API_ENDPOINTS = {
   // Auth
   AUTH: {
-    LOGIN: '/auth/login',
-    LOGOUT: '/auth/logout',
-    ME: '/auth/me'
+    LOGIN: '/users/login',
+    PROFILE: '/users/profile',
+    CHANGE_PASSWORD: '/users/change-password'
   },
 
-  // Persons
-  PERSONS: {
-    BASE: '/persons',
-    SEARCH: '/persons/search',
-    IN_PROCESS: '/persons/in-process',
-    ADD_TO_PROCESS: (id) => `/persons/${id}/add-to-process`,
-    REMOVE_FROM_PROCESS: (id) => `/persons/${id}/remove-from-process`,
-    BY_ID: (id) => `/persons/${id}`,
-    STATS: '/persons/stats',
-    STATS_BY_DISTRICT: (districtId) => `/persons/stats/district/${districtId}`
+  // Users (Admins)
+  USERS: {
+    BASE: '/users',
+    BY_ID: (id) => `/users/${id}`,
+    STATISTICS: {
+      ADMIN_OFFENDER_STATS: '/users/statistics/admin-offender-stats',
+      ADMIN_AND_OFFENDERS_COUNT: '/users/statistics/admin-and-offenders-count'
+    }
   },
 
-  // Admins
-  ADMINS: {
-    BASE: '/admins',
-    BY_ID: (id) => `/admins/${id}`,
-    MAHALLA_INSPECTORS: '/admins/mahalla-inspectors',
-    STATS: '/admins/stats'
-  },
-
-  // Districts
-  DISTRICTS: {
-    BASE: '/districts',
-    MAHALLAS: (districtId) => `/districts/${districtId}/mahallas`
+  // Offenders (Persons)
+  OFFENDERS: {
+    BASE: '/users/offenders',
+    BY_ID: (id) => `/users/offenders/${id}`,
+    SEARCH: '/users/offenders/search',
+    ADD_TO_PROCESS: (id) => `/users/offenders/${id}/add_to_process`,
+    REMOVE_FROM_PROCESS: (id) => `/users/offenders/${id}/remove_from_process`
   },
 
   // Crime Categories
   CRIME_CATEGORIES: {
-    BASE: '/crime-categories'
+    BASE: '/crimes/categories',
+    BY_ID: (id) => `/crimes/categories/${id}`
   },
 
   // Crime Types
   CRIME_TYPES: {
-    BASE: '/crime-types'
+    BASE: '/crimes',
+    BY_ID: (id) => `/crimes/${id}`
   },
 
-  // Reports
-  REPORTS: {
-    GENERATE: '/reports/generate'
-  }
-};
-
-// HTTP konfiguratsiya
-export const HTTP_CONFIG = {
-  TIMEOUT: 30000, // 30 soniya
-  HEADERS: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
+  // Files
+  FILES: {
+    BASE: '/common/files',
+    BY_ID: (id) => `/common/files/${id}`
   }
 };
 
