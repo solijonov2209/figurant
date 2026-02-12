@@ -1,188 +1,262 @@
+import { axiosInstance, USE_MOCK_DATA, API_ENDPOINTS } from '../config/api.config';
 import { admins as mockAdmins } from '../data/mockData';
-
-// Bu service hozircha mockdata ishlatadi
-// Keyinchalik API ulangandan keyin faqat shu faylni o'zgartirish kifoya
 
 class AdminService {
   constructor() {
-    // LocalStorage dan ma'lumotlarni yuklash
+    // LocalStorage dan ma'lumotlarni yuklash (faqat mock data uchun)
     const savedAdmins = localStorage.getItem('admins');
     this.admins = savedAdmins ? JSON.parse(savedAdmins) : [...mockAdmins];
   }
 
-  // Ma'lumotlarni saqlash
+  // Ma'lumotlarni saqlash (faqat mock data uchun)
   saveToLocalStorage() {
     localStorage.setItem('admins', JSON.stringify(this.admins));
   }
 
-  // Login
-  async login(login, password) {
-    // Keyinchalik API: return axios.post('/auth/login', { login, password })
-
-    const admin = this.admins.find(a => a.login === login && a.password === password);
-
-    if (!admin) {
-      throw new Error('Login yoki parol xato');
-    }
-
-    // Parolni o'chirish (xavfsizlik uchun)
-    const { password: _, ...adminWithoutPassword } = admin;
-
-    return { data: adminWithoutPassword };
-  }
-
   // Barcha adminlarni olish
   async getAll() {
-    // Keyinchalik API: return axios.get('/admins')
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      const adminsWithoutPasswords = this.admins.map(({ password, ...admin }) => admin);
+      return { data: adminsWithoutPasswords };
+    }
 
-    // Parollarni o'chirish
-    const adminsWithoutPasswords = this.admins.map(({ password, ...admin }) => admin);
-
-    return { data: adminsWithoutPasswords };
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.BASE);
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Adminlarni yuklashda xatolik');
+    }
   }
 
   // JQB adminlarni olish (faqat Super Admin)
   async getJQBAdmins(user) {
-    // Keyinchalik API: return axios.get('/admins/jqb')
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      if (user.role !== 'SUPER_ADMIN') {
+        throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      }
 
-    if (user.role !== 'SUPER_ADMIN') {
-      throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      const jqbAdmins = this.admins.filter(a => a.role === 'JQB_ADMIN');
+      const adminsWithoutPasswords = jqbAdmins.map(({ password, ...admin }) => admin);
+      return { data: adminsWithoutPasswords };
     }
 
-    const jqbAdmins = this.admins.filter(a => a.role === 'JQB_ADMIN');
-    const adminsWithoutPasswords = jqbAdmins.map(({ password, ...admin }) => admin);
-
-    return { data: adminsWithoutPasswords };
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.BASE, {
+        params: { role: 'JQB_ADMIN' }
+      });
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'JQB adminlarni yuklashda xatolik');
+    }
   }
 
   // Mahalla inspektorlarni olish (Super Admin va JQB)
   async getMahallaInspectors(user) {
-    // Keyinchalik API: return axios.get('/admins/mahalla', { params: { userId: user.id } })
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      if (user.role === 'MAHALLA_INSPECTOR') {
+        throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      }
 
-    if (user.role === 'MAHALLA_INSPECTOR') {
-      throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      let inspectors = this.admins.filter(a => a.role === 'MAHALLA_INSPECTOR');
+
+      // JQB admin faqat o'z tumanidagi BARCHA inspektorlarni ko'radi
+      if (user.role === 'JQB_ADMIN') {
+        inspectors = inspectors.filter(a => a.districtId === user.districtId);
+      }
+
+      const inspectorsWithoutPasswords = inspectors.map(({ password, ...admin }) => admin);
+      return { data: inspectorsWithoutPasswords };
     }
 
-    let inspectors = this.admins.filter(a => a.role === 'MAHALLA_INSPECTOR');
-
-    // JQB admin faqat o'z tumanidagi BARCHA inspektorlarni ko'radi
-    if (user.role === 'JQB_ADMIN') {
-      inspectors = inspectors.filter(a => a.districtId === user.districtId);
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.MAHALLA_INSPECTORS, {
+        params: { userId: user.id }
+      });
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Inspektorlarni yuklashda xatolik');
     }
-
-    const inspectorsWithoutPasswords = inspectors.map(({ password, ...admin }) => admin);
-
-    return { data: inspectorsWithoutPasswords };
   }
 
   // Admin qo'shish (Super Admin va JQB Admin)
   async create(adminData, user) {
-    // Keyinchalik API: return axios.post('/admins', { ...adminData, createdBy: user.id })
-
-    // Ruxsat tekshiruvi
-    if (user.role === 'MAHALLA_INSPECTOR') {
-      throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
-    }
-
-    // JQB Admin faqat o'z tumaniga mahalla inspektor qo'sha oladi
-    if (user.role === 'JQB_ADMIN') {
-      if (adminData.role !== 'MAHALLA_INSPECTOR') {
-        throw new Error('Siz faqat mahalla inspektori qo\'sha olasiz');
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      // Ruxsat tekshiruvi
+      if (user.role === 'MAHALLA_INSPECTOR') {
+        throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
       }
-      if (parseInt(adminData.districtId) !== user.districtId) {
-        throw new Error('Siz faqat o\'z tumaningizga inspektor qo\'sha olasiz');
+
+      // JQB Admin faqat o'z tumaniga mahalla inspektor qo'sha oladi
+      if (user.role === 'JQB_ADMIN') {
+        if (adminData.role !== 'MAHALLA_INSPECTOR') {
+          throw new Error('Siz faqat mahalla inspektori qo\'sha olasiz');
+        }
+        if (parseInt(adminData.districtId) !== user.districtId) {
+          throw new Error('Siz faqat o\'z tumaningizga inspektor qo\'sha olasiz');
+        }
       }
-    }
 
-    // Login mavjudligini tekshirish
-    const existingAdmin = this.admins.find(a => a.login === adminData.login);
-    if (existingAdmin) {
-      throw new Error('Bu login band');
-    }
-
-    const newAdmin = {
-      id: Math.max(...this.admins.map(a => a.id), 0) + 1,
-      ...adminData,
-      createdBy: user.id, // Kim qo'shganini saqlash
-      createdAt: new Date().toISOString()
-    };
-
-    this.admins.push(newAdmin);
-    this.saveToLocalStorage();
-
-    // Parolni o'chirish
-    const { password, ...adminWithoutPassword } = newAdmin;
-
-    return { data: adminWithoutPassword };
-  }
-
-  // Adminni tahrirlash (faqat Super Admin)
-  async update(adminData, user) {
-    // Keyinchalik API: return axios.put(`/admins/${adminData.id}`, { ...adminData, updatedBy: user.id })
-
-    if (user.role !== 'SUPER_ADMIN') {
-      throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
-    }
-
-    const index = this.admins.findIndex(a => a.id === adminData.id);
-    if (index === -1) {
-      throw new Error('Admin topilmadi');
-    }
-
-    // Login o'zgartirilayotgan bo'lsa, mavjudligini tekshirish
-    if (adminData.login && adminData.login !== this.admins[index].login) {
-      const existingAdmin = this.admins.find(a => a.login === adminData.login && a.id !== adminData.id);
+      // Login mavjudligini tekshirish
+      const existingAdmin = this.admins.find(a => a.username === adminData.username);
       if (existingAdmin) {
         throw new Error('Bu login band');
       }
+
+      const newAdmin = {
+        id: Math.max(...this.admins.map(a => a.id), 0) + 1,
+        ...adminData,
+        createdBy: user.id,
+        createdAt: new Date().toISOString()
+      };
+
+      this.admins.push(newAdmin);
+      this.saveToLocalStorage();
+
+      const { password, ...adminWithoutPassword } = newAdmin;
+      return { data: adminWithoutPassword };
     }
 
-    this.admins[index] = { ...this.admins[index], ...adminData };
-    this.saveToLocalStorage();
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.post(API_ENDPOINTS.ADMINS.BASE, {
+        ...adminData,
+        createdBy: user.id
+      });
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Admin qo\'shishda xatolik');
+    }
+  }
 
-    // Parolni o'chirish
-    const { password, ...adminWithoutPassword } = this.admins[index];
+  // Adminni tahrirlash
+  async update(adminData, user) {
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      if (user.role !== 'SUPER_ADMIN') {
+        throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      }
 
-    return { data: adminWithoutPassword };
+      const index = this.admins.findIndex(a => a.id === adminData.id);
+      if (index === -1) {
+        throw new Error('Admin topilmadi');
+      }
+
+      // Login o'zgartirilayotgan bo'lsa, mavjudligini tekshirish
+      if (adminData.username && adminData.username !== this.admins[index].username) {
+        const existingAdmin = this.admins.find(a => a.username === adminData.username && a.id !== adminData.id);
+        if (existingAdmin) {
+          throw new Error('Bu login band');
+        }
+      }
+
+      this.admins[index] = { ...this.admins[index], ...adminData };
+      this.saveToLocalStorage();
+
+      const { password, ...adminWithoutPassword } = this.admins[index];
+      return { data: adminWithoutPassword };
+    }
+
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.put(
+        API_ENDPOINTS.ADMINS.BY_ID(adminData.id),
+        {
+          ...adminData,
+          updatedBy: user.id
+        }
+      );
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Admin tahrirlashda xatolik');
+    }
   }
 
   // Adminni o'chirish (faqat Super Admin)
   async delete(id, user) {
-    // Keyinchalik API: return axios.delete(`/admins/${id}`)
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      if (user.role !== 'SUPER_ADMIN') {
+        throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      }
 
-    if (user.role !== 'SUPER_ADMIN') {
-      throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      const index = this.admins.findIndex(a => a.id === id);
+      if (index === -1) {
+        throw new Error('Admin topilmadi');
+      }
+
+      // Super Adminni o'chirish mumkin emas
+      if (this.admins[index].role === 'SUPER_ADMIN') {
+        throw new Error('Super Adminni o\'chirish mumkin emas');
+      }
+
+      this.admins.splice(index, 1);
+      this.saveToLocalStorage();
+
+      return { data: { success: true } };
     }
 
-    const index = this.admins.findIndex(a => a.id === id);
-    if (index === -1) {
-      throw new Error('Admin topilmadi');
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.delete(API_ENDPOINTS.ADMINS.BY_ID(id));
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Admin o\'chirishda xatolik');
     }
-
-    // Super Adminni o'chirish mumkin emas
-    if (this.admins[index].role === 'SUPER_ADMIN') {
-      throw new Error('Super Adminni o\'chirish mumkin emas');
-    }
-
-    this.admins.splice(index, 1);
-    this.saveToLocalStorage();
-
-    return { data: { success: true } };
   }
 
   // ID bo'yicha admin olish
   async getById(id) {
-    // Keyinchalik API: return axios.get(`/admins/${id}`)
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      const admin = this.admins.find(a => a.id === id);
+      if (!admin) {
+        throw new Error('Admin topilmadi');
+      }
 
-    const admin = this.admins.find(a => a.id === id);
-    if (!admin) {
-      throw new Error('Admin topilmadi');
+      const { password, ...adminWithoutPassword } = admin;
+      return { data: adminWithoutPassword };
     }
 
-    // Parolni o'chirish
-    const { password, ...adminWithoutPassword } = admin;
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.BY_ID(id));
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Adminni yuklashda xatolik');
+    }
+  }
 
-    return { data: adminWithoutPassword };
+  // Admin statistikasini olish
+  async getStats() {
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      const totalAdmins = this.admins.length;
+      const jqbAdmins = this.admins.filter(a => a.role === 'JQB_ADMIN').length;
+      const inspectors = this.admins.filter(a => a.role === 'MAHALLA_INSPECTOR').length;
+
+      return {
+        data: {
+          total: totalAdmins,
+          jqbAdmins,
+          inspectors
+        }
+      };
+    }
+
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.STATS);
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Statistikani yuklashda xatolik');
+    }
   }
 }
 

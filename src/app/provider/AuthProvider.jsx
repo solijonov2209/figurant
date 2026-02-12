@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import adminService from "../../shared/services/adminService";
+import authService from "../../shared/services/authService";
 
 const AuthContext = createContext(null);
 
@@ -9,17 +9,17 @@ export const AuthProvider = ({ children }) => {
   );
   const [error, setError] = useState(null);
 
-  const login = async (loginValue, passwordValue) => {
+  const login = async (username, password) => {
     try {
       setError(null);
-      const response = await adminService.login(loginValue, passwordValue);
-      const foundUser = response.data;
+      const response = await authService.login(username, password);
 
-      localStorage.setItem("isAuth", "true");
-      localStorage.setItem("user", JSON.stringify(foundUser));
-      localStorage.setItem("role", foundUser.role);
+      if (!response.success) {
+        setError(response.error);
+        return false;
+      }
 
-      setUser(foundUser);
+      setUser(response.data);
       return true;
     } catch (err) {
       setError(err.message);
@@ -27,10 +27,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    localStorage.clear();
-    setUser(null);
-    window.location.href = "/login";
+  const logout = async () => {
+    try {
+      await authService.logout();
+      setUser(null);
+      window.location.href = "/login";
+    } catch (err) {
+      // Logout xatosi bo'lsa ham foydalanuvchini login sahifasiga yo'naltirish
+      setUser(null);
+      window.location.href = "/login";
+    }
   };
 
   return (
@@ -41,31 +47,3 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
-
-
-// import { createContext, useContext, useState } from "react";
-
-// const AuthContext = createContext(null);
-
-// export const AuthProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);
-
-//   const login = (data) => {
-//     localStorage.setItem("token", data.token);
-//     setUser(data.user);
-//   };
-
-//   const logout = () => {
-//     localStorage.removeItem("token");
-//     setUser(null);
-//     window.location.href = "/login";
-//   };
-
-//   return (
-//     <AuthContext.Provider value={{ user, login, logout }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);

@@ -1,7 +1,5 @@
+import { axiosInstance, USE_MOCK_DATA, API_ENDPOINTS } from '../config/api.config';
 import { crimeTypes as mockCrimeTypes } from '../data/crimeTypes';
-
-// Bu service hozircha mockdata ishlatadi
-// Keyinchalik API ulangandan keyin faqat shu faylni o'zgartirish kifoya
 
 class CrimeTypeService {
   constructor() {
@@ -11,110 +9,177 @@ class CrimeTypeService {
     this.crimeTypes = (parsed && parsed[0] && parsed[0].categoryId) ? parsed : [...mockCrimeTypes];
   }
 
-  // Ma'lumotlarni saqlash
+  // Ma'lumotlarni saqlash (faqat mock data uchun)
   saveToLocalStorage() {
     localStorage.setItem('crimeTypes', JSON.stringify(this.crimeTypes));
   }
 
   // Barcha jinoyat turlarini olish
   async getAll() {
-    return { data: [...this.crimeTypes] };
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      return { data: [...this.crimeTypes] };
+    }
+
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.get(API_ENDPOINTS.CRIME_TYPES.BASE);
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Jinoyat turlarini yuklashda xatolik');
+    }
   }
 
   // Turkum (categoryId) bo'yicha jinoyat turlarini olish
   async getByCategoryId(categoryId) {
-    const filtered = this.crimeTypes.filter(ct => ct.categoryId === parseInt(categoryId));
-    return { data: filtered };
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      const filtered = this.crimeTypes.filter(ct => ct.categoryId === parseInt(categoryId));
+      return { data: filtered };
+    }
+
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.get(API_ENDPOINTS.CRIME_TYPES.BASE, {
+        params: { categoryId }
+      });
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Jinoyat turlarini yuklashda xatolik');
+    }
   }
 
   // ID bo'yicha jinoyat turini olish
   async getById(id) {
-    const crimeType = this.crimeTypes.find(ct => ct.id === id);
-    if (!crimeType) {
-      throw new Error('Jinoyat turi topilmadi');
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      const crimeType = this.crimeTypes.find(ct => ct.id === id);
+      if (!crimeType) {
+        throw new Error('Jinoyat turi topilmadi');
+      }
+      return { data: crimeType };
     }
-    return { data: crimeType };
+
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.get(`${API_ENDPOINTS.CRIME_TYPES.BASE}/${id}`);
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Jinoyat turini yuklashda xatolik');
+    }
   }
 
   // Jinoyat turi qo'shish (faqat Super Admin)
   async create(crimeTypeData, user) {
-    if (user.role !== 'SUPER_ADMIN') {
-      throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      if (user.role !== 'SUPER_ADMIN') {
+        throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      }
+
+      if (!crimeTypeData.categoryId) {
+        throw new Error('Turkum tanlash zarur');
+      }
+
+      // Bir turkumda bir xil nom tekshirish
+      const exists = this.crimeTypes.find(ct =>
+        ct.name.toLowerCase() === crimeTypeData.name.toLowerCase() &&
+        ct.categoryId === crimeTypeData.categoryId
+      );
+
+      if (exists) {
+        throw new Error('Bu jinoyat turi allaqachon mavjud');
+      }
+
+      const newCrimeType = {
+        id: Math.max(...this.crimeTypes.map(ct => ct.id), 0) + 1,
+        name: crimeTypeData.name,
+        categoryId: crimeTypeData.categoryId,
+        createdAt: new Date().toISOString()
+      };
+
+      this.crimeTypes.push(newCrimeType);
+      this.saveToLocalStorage();
+
+      return { data: newCrimeType };
     }
 
-    if (!crimeTypeData.categoryId) {
-      throw new Error('Turkum tanlash zarur');
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.post(API_ENDPOINTS.CRIME_TYPES.BASE, crimeTypeData);
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Jinoyat turi qo\'shishda xatolik');
     }
-
-    // Bir turkumda bir xil nom tekshirish
-    const exists = this.crimeTypes.find(ct =>
-      ct.name.toLowerCase() === crimeTypeData.name.toLowerCase() &&
-      ct.categoryId === crimeTypeData.categoryId
-    );
-
-    if (exists) {
-      throw new Error('Bu jinoyat turi allaqachon mavjud');
-    }
-
-    const newCrimeType = {
-      id: Math.max(...this.crimeTypes.map(ct => ct.id), 0) + 1,
-      name: crimeTypeData.name,
-      categoryId: crimeTypeData.categoryId,
-      createdAt: new Date().toISOString()
-    };
-
-    this.crimeTypes.push(newCrimeType);
-    this.saveToLocalStorage();
-
-    return { data: newCrimeType };
   }
 
   // Jinoyat turini tahrirlash (faqat Super Admin)
   async update(id, crimeTypeData, user) {
-    // Keyinchalik API: return axios.put(`/crime-types/${id}`, crimeTypeData)
-
-    if (user.role !== 'SUPER_ADMIN') {
-      throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
-    }
-
-    const index = this.crimeTypes.findIndex(ct => ct.id === id);
-    if (index === -1) {
-      throw new Error('Jinoyat turi topilmadi');
-    }
-
-    // Ism o'zgartirilayotgan bo'lsa, mavjudligini tekshirish
-    if (crimeTypeData.name && crimeTypeData.name !== this.crimeTypes[index].name) {
-      const exists = this.crimeTypes.find(ct =>
-        ct.name.toLowerCase() === crimeTypeData.name.toLowerCase()
-      );
-      if (exists) {
-        throw new Error('Bu jinoyat turi allaqachon mavjud');
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      if (user.role !== 'SUPER_ADMIN') {
+        throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
       }
+
+      const index = this.crimeTypes.findIndex(ct => ct.id === id);
+      if (index === -1) {
+        throw new Error('Jinoyat turi topilmadi');
+      }
+
+      // Ism o'zgartirilayotgan bo'lsa, mavjudligini tekshirish
+      if (crimeTypeData.name && crimeTypeData.name !== this.crimeTypes[index].name) {
+        const exists = this.crimeTypes.find(ct =>
+          ct.name.toLowerCase() === crimeTypeData.name.toLowerCase()
+        );
+        if (exists) {
+          throw new Error('Bu jinoyat turi allaqachon mavjud');
+        }
+      }
+
+      this.crimeTypes[index] = { ...this.crimeTypes[index], ...crimeTypeData };
+      this.saveToLocalStorage();
+
+      return { data: this.crimeTypes[index] };
     }
 
-    this.crimeTypes[index] = { ...this.crimeTypes[index], ...crimeTypeData };
-    this.saveToLocalStorage();
-
-    return { data: this.crimeTypes[index] };
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.put(
+        `${API_ENDPOINTS.CRIME_TYPES.BASE}/${id}`,
+        crimeTypeData
+      );
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Jinoyat turini tahrirlashda xatolik');
+    }
   }
 
   // Jinoyat turini o'chirish (faqat Super Admin)
   async delete(id, user) {
-    // Keyinchalik API: return axios.delete(`/crime-types/${id}`)
+    if (USE_MOCK_DATA) {
+      // Mock data bilan ishlash
+      if (user.role !== 'SUPER_ADMIN') {
+        throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      }
 
-    if (user.role !== 'SUPER_ADMIN') {
-      throw new Error('Sizda bu amalni bajarish huquqi yo\'q');
+      const index = this.crimeTypes.findIndex(ct => ct.id === id);
+      if (index === -1) {
+        throw new Error('Jinoyat turi topilmadi');
+      }
+
+      this.crimeTypes.splice(index, 1);
+      this.saveToLocalStorage();
+
+      return { data: { success: true } };
     }
 
-    const index = this.crimeTypes.findIndex(ct => ct.id === id);
-    if (index === -1) {
-      throw new Error('Jinoyat turi topilmadi');
+    // Real API bilan ishlash
+    try {
+      const response = await axiosInstance.delete(`${API_ENDPOINTS.CRIME_TYPES.BASE}/${id}`);
+      return { data: response.data };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Jinoyat turini o\'chirishda xatolik');
     }
-
-    this.crimeTypes.splice(index, 1);
-    this.saveToLocalStorage();
-
-    return { data: { success: true } };
   }
 }
 
