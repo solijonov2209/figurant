@@ -16,7 +16,8 @@ const axiosInstance = axios.create({
   timeout: 30000, // 30 soniya
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    'Accept': 'application/json',
+    'ngrok-skip-browser-warning': 'true' // Ngrok warning page ni o'tkazib yuborish
   }
 });
 
