@@ -7,7 +7,7 @@ class AuthService {
     if (USE_MOCK_DATA) {
       // Mock data bilan ishlash
       const admin = mockAdmins.find(
-        (a) => a.username === username && a.password === password
+        (a) => a.login === username && a.password === password
       );
 
       if (admin) {
@@ -16,7 +16,7 @@ class AuthService {
 
         const userData = {
           id: admin.id,
-          username: admin.username,
+          username: admin.login, // login ni username sifatida qaytarish
           firstName: admin.firstName,
           lastName: admin.lastName,
           phoneNumber: admin.phoneNumber,
