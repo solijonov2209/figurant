@@ -20,9 +20,10 @@ class CrimeCategoryService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.get(API_ENDPOINTS.CRIME_CATEGORIES.BASE);
-      return { data: response.data };
+      const data = response.data.results || response.data;
+      return { data: Array.isArray(data) ? data : [] };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Turkumlarni yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Turkumlarni yuklashda xatolik');
     }
   }
 
@@ -50,10 +51,16 @@ class CrimeCategoryService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.post(API_ENDPOINTS.CRIME_CATEGORIES.BASE, data);
+      const response = await axiosInstance.post(API_ENDPOINTS.CRIME_CATEGORIES.BASE, {
+        name: data.name
+      });
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Turkum qo\'shishda xatolik');
+      const errorMsg = error.response?.data?.message
+        || error.response?.data?.detail
+        || error.response?.data?.name?.[0]
+        || 'Turkum qo\'shishda xatolik';
+      throw new Error(errorMsg);
     }
   }
 
@@ -81,12 +88,16 @@ class CrimeCategoryService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.put(
-        `${API_ENDPOINTS.CRIME_CATEGORIES.BASE}/${id}`,
-        data
+        API_ENDPOINTS.CRIME_CATEGORIES.BY_ID(id),
+        { name: data.name }
       );
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Turkumni tahrirlashda xatolik');
+      const errorMsg = error.response?.data?.message
+        || error.response?.data?.detail
+        || error.response?.data?.name?.[0]
+        || 'Turkumni tahrirlashda xatolik';
+      throw new Error(errorMsg);
     }
   }
 
@@ -108,11 +119,11 @@ class CrimeCategoryService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.delete(
-        `${API_ENDPOINTS.CRIME_CATEGORIES.BASE}/${id}`
+        API_ENDPOINTS.CRIME_CATEGORIES.BY_ID(id)
       );
-      return { data: response.data };
+      return { data: response.data || {} };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Turkumni o\'chirishda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Turkumni o\'chirishda xatolik');
     }
   }
 }

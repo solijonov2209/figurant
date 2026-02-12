@@ -24,9 +24,10 @@ class CrimeTypeService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.get(API_ENDPOINTS.CRIME_TYPES.BASE);
-      return { data: response.data };
+      const data = response.data.results || response.data;
+      return { data: Array.isArray(data) ? data : [] };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Jinoyat turlarini yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Jinoyat turlarini yuklashda xatolik');
     }
   }
 
@@ -41,11 +42,12 @@ class CrimeTypeService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.get(API_ENDPOINTS.CRIME_TYPES.BASE, {
-        params: { categoryId }
+        params: { category: categoryId }
       });
-      return { data: response.data };
+      const data = response.data.results || response.data;
+      return { data: Array.isArray(data) ? data : [] };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Jinoyat turlarini yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Jinoyat turlarini yuklashda xatolik');
     }
   }
 
@@ -62,10 +64,10 @@ class CrimeTypeService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(`${API_ENDPOINTS.CRIME_TYPES.BASE}/${id}`);
+      const response = await axiosInstance.get(API_ENDPOINTS.CRIME_TYPES.BY_ID(id));
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Jinoyat turini yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Jinoyat turini yuklashda xatolik');
     }
   }
 
@@ -106,10 +108,17 @@ class CrimeTypeService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.post(API_ENDPOINTS.CRIME_TYPES.BASE, crimeTypeData);
+      const response = await axiosInstance.post(API_ENDPOINTS.CRIME_TYPES.BASE, {
+        name: crimeTypeData.name,
+        category: crimeTypeData.categoryId
+      });
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Jinoyat turi qo\'shishda xatolik');
+      const errorMsg = error.response?.data?.message
+        || error.response?.data?.detail
+        || error.response?.data?.name?.[0]
+        || 'Jinoyat turi qo\'shishda xatolik';
+      throw new Error(errorMsg);
     }
   }
 
@@ -145,12 +154,19 @@ class CrimeTypeService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.put(
-        `${API_ENDPOINTS.CRIME_TYPES.BASE}/${id}`,
-        crimeTypeData
+        API_ENDPOINTS.CRIME_TYPES.BY_ID(id),
+        {
+          name: crimeTypeData.name,
+          category: crimeTypeData.categoryId
+        }
       );
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Jinoyat turini tahrirlashda xatolik');
+      const errorMsg = error.response?.data?.message
+        || error.response?.data?.detail
+        || error.response?.data?.name?.[0]
+        || 'Jinoyat turini tahrirlashda xatolik';
+      throw new Error(errorMsg);
     }
   }
 
@@ -175,10 +191,10 @@ class CrimeTypeService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.delete(`${API_ENDPOINTS.CRIME_TYPES.BASE}/${id}`);
-      return { data: response.data };
+      const response = await axiosInstance.delete(API_ENDPOINTS.CRIME_TYPES.BY_ID(id));
+      return { data: response.data || { success: true } };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Jinoyat turini o\'chirishda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Jinoyat turini o\'chirishda xatolik');
     }
   }
 }

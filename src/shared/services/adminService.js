@@ -23,10 +23,12 @@ class AdminService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.BASE);
-      return { data: response.data };
+      const response = await axiosInstance.get(API_ENDPOINTS.USERS.BASE);
+      // Pagination bo'lsa, results ni olish
+      const data = response.data.results || response.data;
+      return { data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Adminlarni yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Adminlarni yuklashda xatolik');
     }
   }
 
@@ -45,12 +47,14 @@ class AdminService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.BASE, {
+      const response = await axiosInstance.get(API_ENDPOINTS.USERS.BASE, {
         params: { role: 'JQB_ADMIN' }
       });
-      return { data: response.data };
+      const data = response.data.results || response.data;
+      const jqbAdmins = Array.isArray(data) ? data.filter(u => u.role === 'JQB_ADMIN') : [];
+      return { data: jqbAdmins };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'JQB adminlarni yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'JQB adminlarni yuklashda xatolik');
     }
   }
 
@@ -75,12 +79,20 @@ class AdminService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.MAHALLA_INSPECTORS, {
-        params: { userId: user.id }
+      const response = await axiosInstance.get(API_ENDPOINTS.USERS.BASE, {
+        params: { role: 'MAHALLA_INSPECTOR' }
       });
-      return { data: response.data };
+      let data = response.data.results || response.data;
+      let inspectors = Array.isArray(data) ? data.filter(u => u.role === 'MAHALLA_INSPECTOR') : [];
+
+      // JQB admin faqat o'z tumanidagi inspektorlarni ko'radi
+      if (user.role === 'JQB_ADMIN') {
+        inspectors = inspectors.filter(i => i.districtId === user.districtId || i.district === user.districtId);
+      }
+
+      return { data: inspectors };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Inspektorlarni yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Inspektorlarni yuklashda xatolik');
     }
   }
 
@@ -125,13 +137,17 @@ class AdminService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.post(API_ENDPOINTS.ADMINS.BASE, {
+      const response = await axiosInstance.post(API_ENDPOINTS.USERS.BASE, {
         ...adminData,
-        createdBy: user.id
+        created_by: user.id
       });
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Admin qo\'shishda xatolik');
+      const errorMsg = error.response?.data?.message
+        || error.response?.data?.detail
+        || error.response?.data?.username?.[0]
+        || 'Admin qo\'shishda xatolik';
+      throw new Error(errorMsg);
     }
   }
 
@@ -166,15 +182,19 @@ class AdminService {
     // Real API bilan ishlash
     try {
       const response = await axiosInstance.put(
-        API_ENDPOINTS.ADMINS.BY_ID(adminData.id),
+        API_ENDPOINTS.USERS.BY_ID(adminData.id),
         {
           ...adminData,
-          updatedBy: user.id
+          updated_by: user.id
         }
       );
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Admin tahrirlashda xatolik');
+      const errorMsg = error.response?.data?.message
+        || error.response?.data?.detail
+        || error.response?.data?.username?.[0]
+        || 'Admin tahrirlashda xatolik';
+      throw new Error(errorMsg);
     }
   }
 
@@ -204,10 +224,10 @@ class AdminService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.delete(API_ENDPOINTS.ADMINS.BY_ID(id));
-      return { data: response.data };
+      const response = await axiosInstance.delete(API_ENDPOINTS.USERS.BY_ID(id));
+      return { data: response.data || { success: true } };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Admin o\'chirishda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Admin o\'chirishda xatolik');
     }
   }
 
@@ -226,10 +246,10 @@ class AdminService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.BY_ID(id));
+      const response = await axiosInstance.get(API_ENDPOINTS.USERS.BY_ID(id));
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Adminni yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Adminni yuklashda xatolik');
     }
   }
 
@@ -252,10 +272,10 @@ class AdminService {
 
     // Real API bilan ishlash
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.ADMINS.STATS);
+      const response = await axiosInstance.get(API_ENDPOINTS.USERS.STATISTICS.ADMIN_AND_OFFENDERS_COUNT);
       return { data: response.data };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Statistikani yuklashda xatolik');
+      throw new Error(error.response?.data?.message || error.response?.data?.detail || 'Statistikani yuklashda xatolik');
     }
   }
 }
