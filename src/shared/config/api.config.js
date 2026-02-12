@@ -4,11 +4,11 @@ import axios from 'axios';
 // Real API tayyor bo'lganda faqat BASE_URL ni o'zgartirish kifoya
 
 // Development uchun mock data
-export const USE_MOCK_DATA = true;
+export const USE_MOCK_DATA = false;
 
 // Production API base URL
 // API tayyor bo'lganda bu URL ni real server manziliga o'zgartiring
-export const BASE_URL = 'http://localhost:8080/api';
+export const BASE_URL = 'https://8ed8-84-54-70-89.ngrok-free.app/api/v1';
 
 // Axios instance yaratish
 const axiosInstance = axios.create({
