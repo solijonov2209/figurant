@@ -4,11 +4,16 @@ import { admins as mockAdmins } from '../data/mockData';
 class AuthService {
   // Login
   async login(username, password) {
+    console.log('🔍 Login attempt:', { username, password, USE_MOCK_DATA });
+    console.log('📋 Available admins:', mockAdmins.map(a => ({ login: a.login, role: a.role })));
+
     if (USE_MOCK_DATA) {
       // Mock data bilan ishlash
       const admin = mockAdmins.find(
         (a) => a.login === username && a.password === password
       );
+
+      console.log('👤 Found admin:', admin ? 'YES' : 'NO', admin);
 
       if (admin) {
         const token = `mock_token_${admin.id}_${Date.now()}`;
@@ -28,9 +33,11 @@ class AuthService {
         };
 
         localStorage.setItem('user', JSON.stringify(userData));
+        console.log('✅ Login successful:', userData);
         return { success: true, data: userData };
       }
 
+      console.log('❌ Login failed: wrong credentials');
       return { success: false, error: "Login yoki parol noto'g'ri" };
     }
 
