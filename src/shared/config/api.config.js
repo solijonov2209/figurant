@@ -3,12 +3,13 @@ import axios from 'axios';
 // API konfiguratsiyasi
 // Real API tayyor bo'lganda faqat BASE_URL ni o'zgartirish kifoya
 
-// Development uchun mock data
-export const USE_MOCK_DATA = false;
+// Environment o'zgaruvchilardan qiymatlarni olish
+// Development: .env faylida sozlang
+// Production: hosting platformasida environment variables da sozlang
+export const USE_MOCK_DATA = import.meta.env.VITE_USE_MOCK_DATA === 'true';
 
-// Production API base URL
-// API tayyor bo'lganda bu URL ni real server manziliga o'zgartiring
-export const BASE_URL = 'https://8ed8-84-54-70-89.ngrok-free.app/api/v1';
+// API base URL - environment dan olish
+export const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
 // Axios instance yaratish
 const axiosInstance = axios.create({
