@@ -45,7 +45,7 @@
 
 /* Logo */
 .logo img {
-  width: 250px;
+  width: 290px;
   margin-bottom: 25px;
 }
 
@@ -96,6 +96,10 @@
   }
 
   .logo img {
+
+    width: 70px;
+
     width: 200px;
+
   }
 }

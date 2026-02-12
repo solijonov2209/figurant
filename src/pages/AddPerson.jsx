@@ -387,15 +387,6 @@ export default function AddPerson() {
             <div className="form-row">
               <input
                 type="text"
-                placeholder="Manzil (yashash manzili va uy raqami):"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              />
-            </div>
-
-            <div className="form-row">
-              <input
-                type="text"
                 placeholder="Avtomobil ma'lumoti:"
                 value={formData.carInfo}
                 onChange={(e) => setFormData({ ...formData, carInfo: e.target.value })}
@@ -430,6 +421,15 @@ export default function AddPerson() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="form-row">
+              <input
+                type="text"
+                placeholder="Manzil (yashash manzili va uy raqami):"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+              />
             </div>
 
             <div className="form-row dropdown-row">
