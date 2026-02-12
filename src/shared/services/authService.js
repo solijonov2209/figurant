@@ -41,15 +41,24 @@ class AuthService {
         password
       });
 
-      // Response strukturasi: { token: "...", user: {...} }
-      const { token, user } = response.data;
+      // Response strukturasi: { role: "superadmin", access: "...", refresh: "..." }
+      const { access, refresh, role, ...userData } = response.data;
 
-      if (!token || !user) {
+      if (!access) {
         throw new Error("Noto'g'ri response strukturasi");
       }
 
-      setAuthToken(token);
+      // Access token ni saqlash (refresh token ham bor, lekin hozircha faqat access ishlatamiz)
+      setAuthToken(access);
+
+      // User ma'lumotlarini yaratish
+      const user = {
+        role,
+        ...userData
+      };
+
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('refresh_token', refresh); // Refresh token ni alohida saqlash
 
       return { success: true, data: user };
     } catch (error) {
