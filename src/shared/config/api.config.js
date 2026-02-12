@@ -8,6 +8,12 @@ import axios from 'axios';
 // Production: hosting platformasida environment variables da sozlang
 export const USE_MOCK_DATA = import.meta.env.VITE_USE_MOCK_DATA === 'true';
 
+// Debug: konsolga chiqarish
+console.log('🔍 API Config Debug:');
+console.log('VITE_USE_MOCK_DATA:', import.meta.env.VITE_USE_MOCK_DATA);
+console.log('USE_MOCK_DATA:', USE_MOCK_DATA);
+console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
+
 // API base URL - environment dan olish
 export const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
